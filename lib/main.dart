@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:login/router/router.dart';
 import 'package:login/tool/shared_prefs.dart';
 
+import 'generated/l10n.dart';
 import 'logger/logger.dart';
 
 void main() async {
@@ -23,6 +25,13 @@ class MyApp extends StatelessWidget {
         routeInformationParser: rootRouter.routeInformationParser,
         routerDelegate: rootRouter.routerDelegate,
         title: 'Login Example',
+        localizationsDelegates: const [
+          S.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: S.delegate.supportedLocales,
         theme: ThemeData(
           primarySwatch: Colors.blue,
           appBarTheme: const AppBarTheme(

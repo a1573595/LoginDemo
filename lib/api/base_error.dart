@@ -1,3 +1,5 @@
+import '../generated/l10n.dart';
+
 /// 自定義的Error
 abstract class BaseError {
   final int code;
@@ -11,7 +13,7 @@ class NeedLogin implements BaseError {
   int get code => 401;
 
   @override
-  String get message => "請先登入";
+  String get message => S.current.http_error_401;
 }
 
 class NeedAuth implements BaseError {
@@ -19,15 +21,7 @@ class NeedAuth implements BaseError {
   int get code => 403;
 
   @override
-  String get message => "非法存取，請使用正確的Token";
-}
-
-class UserNotExist implements BaseError {
-  @override
-  int get code => 408;
-
-  @override
-  String get message => "用戶不存在";
+  String get message => S.current.http_error_403;
 }
 
 class UserNameEmpty implements BaseError {
@@ -35,15 +29,7 @@ class UserNameEmpty implements BaseError {
   int get code => 405;
 
   @override
-  String get message => "用戶名稱不可為空";
-}
-
-class PwdNotMatch implements BaseError {
-  @override
-  int get code => 409;
-
-  @override
-  String get message => "用戶密碼不正確";
+  String get message => S.current.http_error_405;
 }
 
 class PwdEmpty implements BaseError {
@@ -51,7 +37,23 @@ class PwdEmpty implements BaseError {
   int get code => 406;
 
   @override
-  String get message => "用戶密碼不可為空";
+  String get message => S.current.http_error_406;
+}
+
+class UserNotExist implements BaseError {
+  @override
+  int get code => 408;
+
+  @override
+  String get message => S.current.http_error_408;
+}
+
+class PwdNotMatch implements BaseError {
+  @override
+  int get code => 409;
+
+  @override
+  String get message => S.current.http_error_409;
 }
 
 class OtherError implements BaseError {

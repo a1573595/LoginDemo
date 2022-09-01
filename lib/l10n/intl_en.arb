@@ -1,0 +1,20 @@
+{
+  "welcome_back": "Welcome\nBack",
+  "sign_in": "Sign In",
+  "sign_up": "Sign Up",
+  "forgot_password": "Forgot Password",
+  "log_out": "Log Out",
+  "hi": "Hi",
+  "account": "Account",
+  "password": "Password",
+  "please_enter_account": "Please enter account",
+  "please_enter_password": "Please enter password",
+  "loading": "Loading...",
+  "nothing": "Nothing",
+  "http_error_401": "Please login first",
+  "http_error_403": "Invalid token",
+  "http_error_405": "User name cannot be empty",
+  "http_error_406": "User password cannot be empty",
+  "http_error_408": "User does not exist",
+  "http_error_409": "User password is incorrect"
+}

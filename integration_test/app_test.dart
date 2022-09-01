@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:login/generated/l10n.dart';
 
 import 'package:login/main.dart' as app;
 import 'package:login/page/splash/splash_page.dart';
@@ -36,15 +37,15 @@ void main() {
       var accountTextField = find.byType(TextField).first;
       var passwordTextField = find.byType(TextField).at(1);
 
-      expect(find.text("Welcome\nBack"), findsOneWidget);
+      expect(find.text(S.current.welcome_back), findsOneWidget);
 
       /// 按下指定元件
       // await tester.tap(loginButton);
       await safeTap.call(tester, loginButton);
       await tester.pump();
 
-      expect(find.text("Please enter account"), findsOneWidget);
-      expect(find.text("Please enter password"), findsOneWidget);
+      expect(find.text(S.current.please_enter_account), findsOneWidget);
+      expect(find.text(S.current.please_enter_password), findsOneWidget);
 
       /// 輸入內容至指定元件
       await tester.enterText(accountTextField, 'Chien@gmail.com');
@@ -59,8 +60,8 @@ void main() {
 
       expect(find.byType(WelcomePage), findsOneWidget);
 
-      expect(find.text("Hello"), findsOneWidget);
-      expect(find.text("Log Out"), findsOneWidget);
+      expect(find.text(S.current.hi), findsOneWidget);
+      expect(find.text(S.current.log_out), findsOneWidget);
     });
   });
 }

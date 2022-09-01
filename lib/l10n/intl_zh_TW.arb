@@ -1,0 +1,20 @@
+{
+  "welcome_back": "歡迎\n回來",
+  "sign_in": "登入",
+  "sign_up": "註冊",
+  "forgot_password": "忘記密碼",
+  "log_out": "登出",
+  "hi": "嗨",
+  "account": "帳號",
+  "password": "密碼",
+  "please_enter_account": "請輸入帳號",
+  "please_enter_password": "請輸入密碼",
+  "loading": "載入中...",
+  "nothing": "什麼都沒有",
+  "http_error_401": "請先登入",
+  "http_error_403": "無效的Token",
+  "http_error_405": "用戶名稱不可為空",
+  "http_error_406": "用戶密碼不可為空",
+  "http_error_408": "用戶不存在",
+  "http_error_409": "用戶密碼不正確"
+}

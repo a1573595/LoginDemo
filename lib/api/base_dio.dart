@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 
 import '../logger/dio_logger.dart';
-import '../model/base_error.dart';
+import 'base_error.dart';
 
 class Singleton {
   static final Singleton _singleton = Singleton._internal();

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:login/tool/helper.dart';
 
+import '../../generated/l10n.dart';
 import '../../logger/log_console_on_shake.dart';
 import '../../model/login_res.dart';
 import '../../repository/login_repository.dart';
@@ -76,12 +77,12 @@ class _LoginBody extends ConsumerWidget {
         SliverToBoxAdapter(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
+            children: [
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 64),
+                padding: const EdgeInsets.symmetric(vertical: 64),
                 child: Text(
-                  "Welcome\nBack",
-                  style: TextStyle(color: Colors.white, fontSize: 32),
+                  S.current.welcome_back,
+                  style: const TextStyle(color: Colors.white, fontSize: 32),
                 ),
               ),
             ],
@@ -104,9 +105,9 @@ class _LoginBody extends ConsumerWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    'Sign In',
-                    style: TextStyle(
+                  Text(
+                    S.current.sign_in,
+                    style: const TextStyle(
                       color: Color(0xff4c505b),
                       fontSize: 27,
                       fontWeight: FontWeight.w700,
@@ -129,11 +130,11 @@ class _LoginBody extends ConsumerWidget {
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                 TextButton(
                   onPressed: () {
-                    showSnackBar(context, 'Nothing');
+                    showSnackBar(context, S.current.nothing);
                   },
-                  child: const Text(
-                    'Sign Up',
-                    style: TextStyle(
+                  child: Text(
+                    S.current.sign_up,
+                    style: const TextStyle(
                       decoration: TextDecoration.underline,
                       fontSize: 18,
                       color: Color(0xff4c505b),
@@ -142,11 +143,11 @@ class _LoginBody extends ConsumerWidget {
                 ),
                 TextButton(
                   onPressed: () {
-                    showSnackBar(context, 'Nothing');
+                    showSnackBar(context, S.current.nothing);
                   },
-                  child: const Text(
-                    'Forgot Password',
-                    style: TextStyle(
+                  child: Text(
+                    S.current.forgot_password,
+                    style: const TextStyle(
                       decoration: TextDecoration.underline,
                       fontSize: 18,
                       color: Color(0xff4c505b),
@@ -178,7 +179,7 @@ class _LoginBody extends ConsumerWidget {
           const CircularProgressIndicator(),
           Container(
               margin: const EdgeInsets.only(left: 20),
-              child: const Text("Loading...")),
+              child: Text(S.current.loading)),
         ],
       ),
     );
@@ -207,8 +208,10 @@ class _AccountTextField extends ConsumerWidget {
       decoration: InputDecoration(
           fillColor: Colors.grey.shade100,
           filled: true,
-          hintText: 'Account',
-          errorText: ref.watch(_isAccountError) ? "Please enter account" : null,
+          hintText: S.current.account,
+          errorText: ref.watch(_isAccountError)
+              ? S.current.please_enter_account
+              : null,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -251,9 +254,10 @@ class _PasswordTextField extends ConsumerWidget {
       decoration: InputDecoration(
           fillColor: Colors.grey.shade100,
           filled: true,
-          hintText: 'Password',
-          errorText:
-              ref.watch(_isPasswordError) ? "Please enter password" : null,
+          hintText: S.current.password,
+          errorText: ref.watch(_isPasswordError)
+              ? S.current.please_enter_password
+              : null,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
           ),

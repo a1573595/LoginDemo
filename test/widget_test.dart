@@ -8,18 +8,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:login/generated/l10n.dart';
 
 import 'package:login/page/login/login_page.dart';
 import 'package:login/page/welcome/welcome_page.dart';
 import 'package:login/tool/shared_prefs.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+void main() async {
   Widget createWidgetForTesting(Widget child) {
     return MaterialApp(
       home: child,
     );
   }
+
+  /// 載入多語系檔案
+  await S.load(const Locale.fromSubtags(languageCode: 'en'));
 
   setUp(() async {
     SharedPreferences.setMockInitialValues({});
@@ -38,14 +42,14 @@ void main() {
       var passwordTextField = find.byType(TextField).at(1);
 
       /// 比對元件
-      expect(find.text("Welcome\nBack"), findsOneWidget);
+      expect(find.text(S.current.welcome_back), findsOneWidget);
 
       /// 按下指定元件
       await tester.tap(loginButton);
       await tester.pump();
 
-      expect(find.text("Please enter account"), findsOneWidget);
-      expect(find.text("Please enter password"), findsOneWidget);
+      expect(find.text(S.current.please_enter_account), findsOneWidget);
+      expect(find.text(S.current.please_enter_password), findsOneWidget);
 
       /// 輸入內容至指定元件
       await tester.enterText(accountTextField, 'Chien@gmail.com');
@@ -54,8 +58,8 @@ void main() {
       await tester.tap(loginButton);
       await tester.pump();
 
-      expect(find.text("Please enter account"), findsNothing);
-      expect(find.text("Please enter password"), findsOneWidget);
+      expect(find.text(S.current.please_enter_account), findsNothing);
+      expect(find.text(S.current.please_enter_password), findsOneWidget);
 
       await tester.enterText(accountTextField, '');
       await tester.enterText(passwordTextField, 'abc12345');
@@ -64,8 +68,8 @@ void main() {
       await tester.tap(loginButton);
       await tester.pump();
 
-      expect(find.text("Please enter account"), findsOneWidget);
-      expect(find.text("Please enter password"), findsNothing);
+      expect(find.text(S.current.please_enter_account), findsOneWidget);
+      expect(find.text(S.current.please_enter_password), findsNothing);
     });
 
     testWidgets('WelcomePage', (WidgetTester tester) async {
@@ -75,7 +79,9 @@ void main() {
       await tester.pumpWidget(
           ProviderScope(child: createWidgetForTesting(const WelcomePage())));
 
+      expect(find.text(S.current.hi), findsOneWidget);
       expect(find.text(userName), findsOneWidget);
+      expect(find.text(S.current.log_out), findsOneWidget);
     });
   });
 }

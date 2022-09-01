@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:login/tool/shared_prefs.dart';
 
-import '../../main.dart';
+import '../../generated/l10n.dart';
 import '../../router/app_page.dart';
 import '../../tool/images.dart';
 
@@ -23,11 +23,11 @@ class WelcomePage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Padding(
-                padding: EdgeInsets.only(top: 64),
+              Padding(
+                padding: const EdgeInsets.only(top: 64),
                 child: Text(
-                  "Hello",
-                  style: TextStyle(color: Colors.white, fontSize: 32),
+                  S.current.hi,
+                  style: const TextStyle(color: Colors.white, fontSize: 32),
                 ),
               ),
               Expanded(
@@ -59,8 +59,8 @@ class _LogoutTextState extends State<LogoutText> {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: () => logout(context),
-      child: const Text('Log Out',
-          style: TextStyle(
+      child: Text(S.current.log_out,
+          style: const TextStyle(
             decoration: TextDecoration.underline,
             fontSize: 18,
             color: Color(0xff4c505b),
