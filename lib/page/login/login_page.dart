@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:login/tool/helper.dart';
+import 'package:login/utils/helper.dart';
 
 import '../../generated/l10n.dart';
 import '../../logger/log_console_on_shake.dart';
@@ -9,8 +9,8 @@ import '../../logger/logger.dart';
 import '../../model/login_res.dart';
 import '../../repository/login_repository.dart';
 import '../../router/app_page.dart';
-import '../../tool/images.dart';
-import '../../tool/shared_prefs.dart';
+import '../../utils/images.dart';
+import '../../utils/shared_prefs.dart';
 
 part 'login_view_model.dart';
 

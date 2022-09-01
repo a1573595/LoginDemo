@@ -3,7 +3,7 @@ import 'package:login/model/login_req.dart';
 
 import '../api/api_client.dart';
 import '../model/login_res.dart';
-import '../tool/shared_prefs.dart';
+import '../utils/shared_prefs.dart';
 
 final loginRepository = Provider((ref) => LoginRepository(ref));
 

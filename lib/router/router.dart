@@ -4,7 +4,7 @@ import '../page/console/log_console_page.dart';
 import '../page/splash/splash_page.dart';
 import '../page/login/login_page.dart';
 import '../page/welcome/welcome_page.dart';
-import '../tool/shared_prefs.dart';
+import '../utils/shared_prefs.dart';
 import 'app_page.dart';
 
 const pageLogin = '/login';

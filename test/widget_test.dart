@@ -14,7 +14,7 @@ import 'package:login/logger/logger.dart';
 
 import 'package:login/page/login/login_page.dart';
 import 'package:login/page/welcome/welcome_page.dart';
-import 'package:login/tool/shared_prefs.dart';
+import 'package:login/utils/shared_prefs.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {

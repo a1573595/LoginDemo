@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:login/tool/shared_prefs.dart';
+import 'package:login/utils/shared_prefs.dart';
 
 import '../../generated/l10n.dart';
 import '../../repository/login_repository.dart';
 import '../../router/app_page.dart';
-import '../../tool/images.dart';
+import '../../utils/images.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({Key? key}) : super(key: key);

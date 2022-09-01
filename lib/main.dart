@@ -3,7 +3,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:login/router/router.dart';
-import 'package:login/tool/shared_prefs.dart';
+import 'package:login/utils/edge_util.dart';
+import 'package:login/utils/shared_prefs.dart';
 
 import 'generated/l10n.dart';
 import 'logger/logger.dart';
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) => ScreenUtilInit(
         minTextAdapt: true,
         builder: (context, child) {
+          edgeUtil.init();
           var textTheme = Typography.tall2018.apply(fontSizeFactor: 1.sp);
 
           String? lastLocation;
