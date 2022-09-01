@@ -1,5 +1,6 @@
 enum AppPage {
   splash('Splash', ''),
+  logConsole('LogConsole', 'console'),
   login('Login', 'login'),
   welcome('Welcome', 'welcome');
 

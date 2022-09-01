@@ -1,8 +1,7 @@
 import 'package:dio/dio.dart';
 
+import '../logger/dio_logger.dart';
 import '../model/base_error.dart';
-
-import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class Singleton {
   static final Singleton _singleton = Singleton._internal();
@@ -28,7 +27,7 @@ class BaseDio {
   Dio getDio() {
     final Dio dio = Dio();
     dio.options = BaseOptions(receiveTimeout: 15000, connectTimeout: 15000);
-    dio.interceptors.add(PrettyDioLogger());
+    dio.interceptors.add(DioLogger());
 
     return dio;
   }

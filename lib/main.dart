@@ -3,9 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:login/router/router.dart';
 import 'package:login/tool/shared_prefs.dart';
 
+import 'logger/logger.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  await logger.init();
   await sharedPrefs.init();
 
   runApp(const ProviderScope(child: MyApp()));

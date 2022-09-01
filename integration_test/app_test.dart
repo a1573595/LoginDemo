@@ -19,7 +19,7 @@ void main() {
       app.main();
 
       /// 觸發畫面刷新
-      await tester.pump();
+      await tester.pumpAndSettle();
 
       /// 比對頁面
       expect(find.byType(SplashPage), findsOneWidget);

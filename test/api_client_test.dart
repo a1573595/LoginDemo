@@ -1,7 +1,10 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:logger/logger.dart';
 import 'package:login/api/api_client.dart';
+import 'package:login/logger/logger.dart';
 import 'package:login/model/login_req.dart';
 import 'package:login/model/login_res.dart';
 import 'package:mock_web_server/mock_web_server.dart';
@@ -23,7 +26,7 @@ void main() {
     // };
     await _server.start();
 
-    _client = ApiClient(baseUrl: _server.url);
+    _client = ApiClient(dio: Dio(),baseUrl: _server.url);
   });
 
   /// 測試結束後執行

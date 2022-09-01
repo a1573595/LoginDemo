@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:login/tool/helper.dart';
 
-import '../../main.dart';
+import '../../logger/log_console_on_shake.dart';
 import '../../model/login_res.dart';
 import '../../repository/login_repository.dart';
 import '../../router/app_page.dart';
@@ -17,7 +17,7 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return LogConsoleOnShake(Container(
       padding: const EdgeInsets.symmetric(horizontal: 32),
       decoration: const BoxDecoration(
         image:
@@ -27,7 +27,7 @@ class LoginPage extends StatelessWidget {
         backgroundColor: Colors.transparent,
         body: _LoginBody(),
       ),
-    );
+    ));
   }
 }
 

@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 
+import '../page/console/log_console_page.dart';
 import '../page/splash/splash_page.dart';
 import '../page/login/login_page.dart';
 import '../page/welcome/welcome_page.dart';
@@ -18,6 +19,11 @@ final GoRouter rootRouter = GoRouter(
         name: AppPage.splash.name,
         path: AppPage.splash.fullPath,
         builder: (context, state) => const SplashPage(),
+      ),
+      GoRoute(
+        name: AppPage.logConsole.name,
+        path: AppPage.logConsole.fullPath,
+        builder: (context, state) => const LogConsolePage(),
       ),
       GoRoute(
         name: AppPage.login.name,
