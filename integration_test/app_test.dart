@@ -40,14 +40,18 @@ void main() {
       expect(find.text(S.current.welcome_back), findsOneWidget);
 
       /// 按下指定元件
-      // await tester.tap(loginButton);
       await safeTap.call(tester, loginButton);
+      await tester.pump();
+
+      /// 輸入內容至指定元件
+      await tester.enterText(accountTextField, '');
+      await tester.pump();
+      await tester.enterText(passwordTextField, '');
       await tester.pump();
 
       expect(find.text(S.current.please_enter_account), findsOneWidget);
       expect(find.text(S.current.please_enter_password), findsOneWidget);
 
-      /// 輸入內容至指定元件
       await tester.enterText(accountTextField, 'Chien@gmail.com');
       await tester.pump();
       await tester.enterText(passwordTextField, 'abc12345');

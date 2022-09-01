@@ -39,6 +39,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("User password is incorrect"),
         "loading": MessageLookupByLibrary.simpleMessage("Loading..."),
         "log_out": MessageLookupByLibrary.simpleMessage("Log Out"),
+        "login_failed": MessageLookupByLibrary.simpleMessage("Login failed"),
         "nothing": MessageLookupByLibrary.simpleMessage("Nothing"),
         "password": MessageLookupByLibrary.simpleMessage("Password"),
         "please_enter_account":

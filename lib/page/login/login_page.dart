@@ -44,29 +44,22 @@ class _LoginBody extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.listen(_gotoNext, (previous, next) {
-      if (next is String && next.isNotEmpty) {
-        showLoaderDialog(context);
-
-        sharedPrefs.setAccount(ref.read(_account.state).state!).whenComplete(
-            () => sharedPrefs
-                .setIsLogin(true)
-                .whenComplete(() => ref.read(_loginRes.notifier).login()));
-      }
-    });
-
-    ref.listen(_loginRes, (previous, next) {
+    ref.listen(_loginViewModel, (previous, next) {
       if (_isOpen) {
         Navigator.of(context).pop();
       }
 
       if (next is AsyncValue<LoginRes>) {
         next.when(
-          data: (data) => sharedPrefs.setUserName(data.memberName).whenComplete(
-              () => sharedPrefs
-                  .setIsLogin(true)
-                  .whenComplete(() => context.go(AppPage.welcome.fullPath))),
-          loading: () {},
+          data: (data) {
+            if (data.isLoginSuccess) {
+              context.go(AppPage.welcome.fullPath);
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(S.current.login_failed)));
+            }
+          },
+          loading: () => showLoaderDialog(context),
           error: (e, _) => Text(e.toString()),
         );
       }
@@ -83,7 +76,10 @@ class _LoginBody extends ConsumerWidget {
                 padding: const EdgeInsets.symmetric(vertical: 64),
                 child: Text(
                   S.current.welcome_back,
-                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: Colors.white),
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineMedium
+                      ?.copyWith(color: Colors.white),
                 ),
               ),
             ],
@@ -108,14 +104,18 @@ class _LoginBody extends ConsumerWidget {
                 children: [
                   Text(
                     S.current.sign_in,
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w700),
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineSmall
+                        ?.copyWith(fontWeight: FontWeight.w700),
                   ),
                   CircleAvatar(
                     radius: 30,
                     backgroundColor: const Color(0xff4c505b),
                     child: IconButton(
                       color: Colors.white,
-                      onPressed: () => signIn(context, ref),
+                      onPressed: () => ref.read(_loginViewModel.notifier).login(
+                          _accountController.text, _passwordController.text),
                       icon: const Icon(Icons.arrow_forward),
                     ),
                   ),
@@ -157,14 +157,6 @@ class _LoginBody extends ConsumerWidget {
         ),
       ],
     );
-  }
-
-  void signIn(BuildContext context, WidgetRef ref) {
-    var account = _accountController.text;
-    var password = _passwordController.text;
-
-    ref.read(_account.state).state = account;
-    ref.read(_password.state).state = password;
   }
 
   void showLoaderDialog(BuildContext context) {
@@ -242,11 +234,8 @@ class _PasswordTextField extends ConsumerWidget {
     return TextField(
       controller: _controller,
       onChanged: (value) {
-        // ref.read(_viewModel).isPasswordRemoveable = value.isNotEmpty;
         ref.read(_isPasswordRemoveable.state).state = value.isNotEmpty;
       },
-      // obscureText:
-      //     !ref.watch(_viewModel.select((value) => value.isPasswordVisible)),
       obscureText: !ref.watch(_isPasswordVisible.state).state,
       decoration: InputDecoration(
           fillColor: Colors.grey.shade100,
@@ -261,27 +250,6 @@ class _PasswordTextField extends ConsumerWidget {
           suffixIcon: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // IconButton(
-              //     onPressed: () {
-              //       ref.read(_viewModel).isPasswordVisible =
-              //           !ref.read(_viewModel).isPasswordVisible;
-              //     },
-              //     icon: Icon(!ref.watch(
-              //             _viewModel.select((value) => value.isPasswordVisible))
-              //         ? Icons.visibility
-              //         : Icons.visibility_off)),
-              // Consumer(builder: (context, ref, child) {
-              //   return ref.watch(_viewModel
-              //           .select((value) => value.isPasswordRemoveable))
-              //       ? IconButton(
-              //           onPressed: () {
-              //             _controller.clear();
-              //             ref.read(_viewModel).isPasswordRemoveable = false;
-              //           },
-              //           icon: const Icon(Icons.cancel),
-              //         )
-              //       : const SizedBox();
-              // })
               ClipOval(
                 child: Material(
                   color: Colors.transparent,

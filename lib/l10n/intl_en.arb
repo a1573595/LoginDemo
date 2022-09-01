@@ -16,5 +16,6 @@
   "http_error_405": "User name cannot be empty",
   "http_error_406": "User password cannot be empty",
   "http_error_408": "User does not exist",
-  "http_error_409": "User password is incorrect"
+  "http_error_409": "User password is incorrect",
+  "login_failed": "Login failed"
 }

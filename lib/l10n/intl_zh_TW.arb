@@ -16,5 +16,6 @@
   "http_error_405": "用戶名稱不可為空",
   "http_error_406": "用戶密碼不可為空",
   "http_error_408": "用戶不存在",
-  "http_error_409": "用戶密碼不正確"
+  "http_error_409": "用戶密碼不正確",
+  "login_failed": "登入失敗"
 }

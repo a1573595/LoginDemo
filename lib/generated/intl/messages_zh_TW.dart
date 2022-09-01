@@ -33,6 +33,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "http_error_409": MessageLookupByLibrary.simpleMessage("用戶密碼不正確"),
         "loading": MessageLookupByLibrary.simpleMessage("載入中..."),
         "log_out": MessageLookupByLibrary.simpleMessage("登出"),
+        "login_failed": MessageLookupByLibrary.simpleMessage("登入失敗"),
         "nothing": MessageLookupByLibrary.simpleMessage("什麼都沒有"),
         "password": MessageLookupByLibrary.simpleMessage("密碼"),
         "please_enter_account": MessageLookupByLibrary.simpleMessage("請輸入帳號"),

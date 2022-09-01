@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:login/tool/shared_prefs.dart';
 
 import '../../generated/l10n.dart';
+import '../../repository/login_repository.dart';
 import '../../router/app_page.dart';
 import '../../tool/images.dart';
 
@@ -57,26 +59,28 @@ class LogoutText extends StatefulWidget {
 class _LogoutTextState extends State<LogoutText> {
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: () => logout(context),
-      child: Text(S.current.log_out,
-          style: const TextStyle(
-            decoration: TextDecoration.underline,
-            fontSize: 18,
-            color: Color(0xff4c505b),
-          )),
+    return Consumer(
+      builder: (context, ref, child) {
+        return TextButton(
+          onPressed: () => logout(context, ref),
+          child: Text(S.current.log_out,
+              style: const TextStyle(
+                decoration: TextDecoration.underline,
+                fontSize: 18,
+                color: Color(0xff4c505b),
+              )),
+        );
+      },
     );
   }
 
-  void logout(BuildContext context) async {
-    final result = await Future.wait([
-      sharedPrefs.setUserName(''),
-      sharedPrefs.setIsLogin(false),
-    ]);
+  void logout(context, ref) async {
+    final result = await ref.read(loginRepository).logout();
 
+    /// 判斷View是否還存在
     if (!mounted) return;
     if (result.isNotEmpty && !result.any((element) => false)) {
-      context.go(AppPage.login.fullPath);
+      GoRouter.of(context).go(AppPage.login.fullPath);
     }
   }
 }
