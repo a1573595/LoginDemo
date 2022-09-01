@@ -14,6 +14,7 @@ import 'package:login/logger/logger.dart';
 
 import 'package:login/page/login/login_page.dart';
 import 'package:login/page/welcome/welcome_page.dart';
+import 'package:login/utils/edge_util.dart';
 import 'package:login/utils/shared_prefs.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -32,6 +33,11 @@ void main() async {
 
     SharedPreferences.setMockInitialValues({});
     await sharedPrefs.init();
+
+    /// 無法取得ScreenUtil要自行賦值
+    edgeUtil.screenHorizontal = 32;
+    edgeUtil.screenHorizontalPadding =
+        EdgeInsets.symmetric(horizontal: edgeUtil.screenHorizontal);
   });
 
   var account = "Chien@gmail.com";
@@ -78,6 +84,7 @@ void main() async {
       await tester.enterText(accountTextField, account);
       await tester.enterText(passwordTextField, password);
       await tester.safeTap(loginButton);
+
       /// 等待sharedPrefs寫入資料
       await tester.pumpAndSettle();
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:login/utils/edge_util.dart';
 import 'package:login/utils/helper.dart';
 
 import '../../generated/l10n.dart';
@@ -20,7 +21,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LogConsoleOnShake(Container(
-      padding: const EdgeInsets.symmetric(horizontal: 32),
+      padding: edgeUtil.screenHorizontalPadding,
       decoration: const BoxDecoration(
         image:
             DecorationImage(image: AssetImage(Images.login), fit: BoxFit.cover),
