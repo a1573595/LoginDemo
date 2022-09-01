@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:login/tool/shared_prefs.dart';
 
 import '../../main.dart';
+import '../../router/app_page.dart';
 import '../../tool/images.dart';
 
 class WelcomePage extends StatelessWidget {
@@ -75,7 +76,7 @@ class _LogoutTextState extends State<LogoutText> {
 
     if (!mounted) return;
     if (result.isNotEmpty && !result.any((element) => false)) {
-      context.go(pageLogin);
+      context.go(AppPage.login.fullPath);
     }
   }
 }

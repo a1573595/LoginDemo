@@ -1,3 +1,4 @@
+/// 自定義的Error
 abstract class BaseError {
   final int code;
   final String message;
@@ -10,7 +11,7 @@ class NeedLogin implements BaseError {
   int get code => 401;
 
   @override
-  String get message => "请先登录";
+  String get message => "請先登入";
 }
 
 class NeedAuth implements BaseError {
@@ -18,7 +19,7 @@ class NeedAuth implements BaseError {
   int get code => 403;
 
   @override
-  String get message => "非法访问，请使用正确的token";
+  String get message => "非法存取，請使用正確的Token";
 }
 
 class UserNotExist implements BaseError {
@@ -26,7 +27,7 @@ class UserNotExist implements BaseError {
   int get code => 408;
 
   @override
-  String get message => "用户不存在";
+  String get message => "用戶不存在";
 }
 
 class UserNameEmpty implements BaseError {
@@ -34,7 +35,7 @@ class UserNameEmpty implements BaseError {
   int get code => 405;
 
   @override
-  String get message => "用户名不能为空";
+  String get message => "用戶名稱不可為空";
 }
 
 class PwdNotMatch implements BaseError {
@@ -42,7 +43,7 @@ class PwdNotMatch implements BaseError {
   int get code => 409;
 
   @override
-  String get message => "用户密码不正确";
+  String get message => "用戶密碼不正確";
 }
 
 class PwdEmpty implements BaseError {
@@ -50,7 +51,7 @@ class PwdEmpty implements BaseError {
   int get code => 406;
 
   @override
-  String get message => "用户密码不能为空";
+  String get message => "用戶密碼不可為空";
 }
 
 class OtherError implements BaseError {

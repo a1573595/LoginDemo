@@ -1,25 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../main.dart';
+import '../../router/app_page.dart';
 import '../../tool/shared_prefs.dart';
 
-class LaunchPage extends StatefulWidget {
-  const LaunchPage({Key? key}) : super(key: key);
+class SplashPage extends StatefulWidget {
+  const SplashPage({Key? key}) : super(key: key);
 
   @override
-  State<LaunchPage> createState() => _LaunchPageState();
+  State<SplashPage> createState() => _SplashPageState();
 }
 
-class _LaunchPageState extends State<LaunchPage> {
+class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Future.delayed(const Duration(milliseconds: 1500), () {
+        /// 也可以在Splash判斷路徑
+        /// 有利於載入複雜的資料
         var isLogin = sharedPrefs.getIsLogin();
-        var page = isLogin != true ? pageLogin : pageWelcome;
+        var page =
+            isLogin != true ? AppPage.login.fullPath : AppPage.welcome.fullPath;
         context.go(page);
       });
     });

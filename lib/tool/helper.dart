@@ -1,37 +1,7 @@
-// import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-import '../animation/fadein_route.dart';
-
-// import 'package:flutter_login_screen/constants.dart';
-// import 'package:progress_dialog/progress_dialog.dart';
-
-push(BuildContext context, Widget destination) {
-  Navigator.of(context)
-      .push(MaterialPageRoute(builder: (context) => destination));
-}
-
-pushReplacement(BuildContext context, Widget destination) {
-  Navigator.of(context)
-      .pushReplacement(MaterialPageRoute(builder: (context) => destination));
-}
-
-pushAndRemoveUntil(BuildContext context, Widget destination,
-    {bool predict = false}) {
-  // Navigator.of(context).pushAndRemoveUntil(
-  //     MaterialPageRoute(builder: (context) => destination),
-  //     (Route<dynamic> route) => predict);
-
-  Navigator.of(context).pushAndRemoveUntil(
-      FadeInRoute(destination), (Route<dynamic> route) => predict);
-}
-
 bool isDarkMode(BuildContext context) {
-  if (Theme.of(context).brightness == Brightness.light) {
-    return false;
-  } else {
-    return true;
-  }
+  return Theme.of(context).brightness == Brightness.light;
 }
 
 showSnackBar(BuildContext context, String message) {

@@ -1,4 +1,4 @@
-part of '../view/login_page.dart';
+part of 'login_page.dart';
 
 class LoginNotifier extends StateNotifier<AsyncValue<LoginRes>> {
   LoginNotifier(this.ref) : super(const AsyncValue.loading());
@@ -16,6 +16,12 @@ class LoginNotifier extends StateNotifier<AsyncValue<LoginRes>> {
     } catch (e) {
       state = AsyncValue.error(e);
     }
+  }
+
+  /// 是否更新狀態
+  @override
+  bool updateShouldNotify(AsyncValue<LoginRes> old, AsyncValue<LoginRes> current) {
+    return super.updateShouldNotify(old, current);
   }
 }
 
@@ -57,3 +63,27 @@ var _gotoNext = Provider.autoDispose<String>((ref) {
     return '';
   }
 });
+
+// class LoginViewModel {
+//   final UserRepository repository = UserRepository();
+//
+//   final passwordRegex = RegExp(r'^[a-zA-Z0-9]+$');
+//
+//   bool _checkAccount(String account) {
+//     return account.isNotEmpty;
+//   }
+//
+//   bool _checkPassword(String password) {
+//     return password.isNotEmpty && passwordRegex.hasMatch(password);
+//   }
+//
+//   Future<bool> login(String account, String password) {
+//     if (_checkAccount(account)) {
+//       return Future.value(false);
+//     } else if (_checkPassword(password)) {
+//       return Future.value(false);
+//     } else {
+//       return repository.login(account, password);
+//     }
+//   }
+// }

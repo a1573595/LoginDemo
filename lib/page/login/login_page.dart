@@ -3,13 +3,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:login/tool/helper.dart';
 
-import '../../../main.dart';
-import '../../../model/login_res.dart';
-import '../../../repository/login_repository.dart';
-import '../../../tool/images.dart';
-import '../../../tool/shared_prefs.dart';
+import '../../main.dart';
+import '../../model/login_res.dart';
+import '../../repository/login_repository.dart';
+import '../../router/app_page.dart';
+import '../../tool/images.dart';
+import '../../tool/shared_prefs.dart';
 
-part '../viewmodel/login_view_model.dart';
+part 'login_view_model.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -62,7 +63,7 @@ class _LoginBody extends ConsumerWidget {
           data: (data) => sharedPrefs.setUserName(data.memberName).whenComplete(
               () => sharedPrefs
                   .setIsLogin(true)
-                  .whenComplete(() => context.go(pageWelcome))),
+                  .whenComplete(() => context.go(AppPage.welcome.fullPath))),
           loading: () {},
           error: (e, _) => Text(e.toString()),
         );

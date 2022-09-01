@@ -3,7 +3,6 @@ import 'package:dio/dio.dart';
 import '../model/base_error.dart';
 
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
-// import 'package:pro_flutter/http/header_interceptor.dart';
 
 class Singleton {
   static final Singleton _singleton = Singleton._internal();
@@ -16,7 +15,7 @@ class Singleton {
 }
 
 class BaseDio {
-  //BaseDio._(); // 把构造方法私有化
+  //BaseDio._(); // 私有建構函示
 
   static final BaseDio _instance = BaseDio._internal();
 
@@ -28,23 +27,14 @@ class BaseDio {
 
   Dio getDio() {
     final Dio dio = Dio();
-    dio.options = BaseOptions(
-        receiveTimeout: 15000, connectTimeout: 15000); // 设置超时时间等 ...
-    // dio.interceptors.add(HeaderInterceptor()); // 添加拦截器，如 token之类，需要全局使用的参数
+    dio.options = BaseOptions(receiveTimeout: 15000, connectTimeout: 15000);
     dio.interceptors.add(PrettyDioLogger());
-    // dio.interceptors.add(PrettyDioLogger(  // 添加日志格式化工具类
-    //   requestHeader: true,
-    //   requestBody: true,
-    //   responseBody: true,
-    //   responseHeader: false,
-    //   compact: false,
-    // ));
 
     return dio;
   }
 
   BaseError getDioError(Object obj) {
-    // 这里封装了一个 BaseError 类，会根据后端返回的code返回不同的错误类
+    // 封裝BaseError類，依據code返回不同錯誤
     switch (obj.runtimeType) {
       case DioError:
         if ((obj as DioError).type == DioErrorType.response) {
