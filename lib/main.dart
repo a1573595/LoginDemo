@@ -14,6 +14,7 @@ void main() async {
   await logger.init();
   await sharedPrefs.init();
 
+  logger.i('Start App');
   runApp(const ProviderScope(child: MyApp()));
 }
 
@@ -25,6 +26,14 @@ class MyApp extends StatelessWidget {
         minTextAdapt: true,
         builder: (context, child) {
           var textTheme = Typography.tall2018.apply(fontSizeFactor: 1.sp);
+
+          String? lastLocation;
+          rootRouter.addListener(() {
+            if (lastLocation != rootRouter.location) {
+              lastLocation = rootRouter.location;
+              logger.i('Router change:  ${rootRouter.location}');
+            }
+          });
 
           return MaterialApp.router(
             routeInformationProvider: rootRouter.routeInformationProvider,

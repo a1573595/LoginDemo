@@ -6,6 +6,7 @@ class LoginNotifier extends StateNotifier<AsyncValue<LoginRes>> {
   final Ref ref;
 
   void login() async {
+    logger.i('Event: Login');
     var account = ref.read(_account.state).state;
     var password = ref.read(_password.state).state;
 
@@ -20,13 +21,15 @@ class LoginNotifier extends StateNotifier<AsyncValue<LoginRes>> {
 
   /// 是否更新狀態
   @override
-  bool updateShouldNotify(AsyncValue<LoginRes> old, AsyncValue<LoginRes> current) {
+  bool updateShouldNotify(
+      AsyncValue<LoginRes> old, AsyncValue<LoginRes> current) {
     return super.updateShouldNotify(old, current);
   }
 }
 
 final _loginRes =
-    StateNotifierProvider.autoDispose<LoginNotifier, AsyncValue<LoginRes>>((ref) => LoginNotifier(ref));
+    StateNotifierProvider.autoDispose<LoginNotifier, AsyncValue<LoginRes>>(
+        (ref) => LoginNotifier(ref));
 
 var _account = StateProvider.autoDispose<String?>((ref) => null);
 var _password = StateProvider.autoDispose<String?>((ref) => null);

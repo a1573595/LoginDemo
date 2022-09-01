@@ -5,6 +5,7 @@ import 'package:login/tool/helper.dart';
 
 import '../../generated/l10n.dart';
 import '../../logger/log_console_on_shake.dart';
+import '../../logger/logger.dart';
 import '../../model/login_res.dart';
 import '../../repository/login_repository.dart';
 import '../../router/app_page.dart';

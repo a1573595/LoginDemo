@@ -8,7 +8,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:logger/logger.dart';
 import 'package:login/generated/l10n.dart';
+import 'package:login/logger/logger.dart';
 
 import 'package:login/page/login/login_page.dart';
 import 'package:login/page/welcome/welcome_page.dart';
@@ -26,9 +28,14 @@ void main() async {
   await S.load(const Locale.fromSubtags(languageCode: 'en'));
 
   setUp(() async {
+    await logger.init(logger: Logger(level: Level.error));
+
     SharedPreferences.setMockInitialValues({});
     await sharedPrefs.init();
   });
+
+  var account = "Chien@gmail.com";
+  var password = "abc12345";
 
   group('Widget test', () {
     testWidgets('LoginPage', (WidgetTester tester) async {
@@ -52,23 +59,29 @@ void main() async {
       expect(find.text(S.current.please_enter_password), findsOneWidget);
 
       /// 輸入內容至指定元件
-      await tester.enterText(accountTextField, 'Chien@gmail.com');
-      await tester.ensureVisible(loginButton);
-      await tester.pumpAndSettle();
-      await tester.tap(loginButton);
+      await tester.enterText(accountTextField, account);
+      await tester.enterText(passwordTextField, '');
+      await tester.safeTap(loginButton);
       await tester.pump();
 
       expect(find.text(S.current.please_enter_account), findsNothing);
       expect(find.text(S.current.please_enter_password), findsOneWidget);
 
       await tester.enterText(accountTextField, '');
-      await tester.enterText(passwordTextField, 'abc12345');
-      await tester.ensureVisible(loginButton);
-      await tester.pumpAndSettle();
-      await tester.tap(loginButton);
+      await tester.enterText(passwordTextField, password);
+      await tester.safeTap(loginButton);
       await tester.pump();
 
       expect(find.text(S.current.please_enter_account), findsOneWidget);
+      expect(find.text(S.current.please_enter_password), findsNothing);
+
+      await tester.enterText(accountTextField, account);
+      await tester.enterText(passwordTextField, password);
+      await tester.safeTap(loginButton);
+      /// 等待sharedPrefs寫入資料
+      await tester.pumpAndSettle();
+
+      expect(find.text(S.current.please_enter_account), findsNothing);
       expect(find.text(S.current.please_enter_password), findsNothing);
     });
 
@@ -84,4 +97,12 @@ void main() async {
       expect(find.text(S.current.log_out), findsOneWidget);
     });
   });
+}
+
+extension on WidgetTester {
+  safeTap(Finder finder) async {
+    await ensureVisible(finder);
+    await pumpAndSettle();
+    await tap(finder);
+  }
 }
