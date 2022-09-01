@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:login/router/router.dart';
 import 'package:login/tool/shared_prefs.dart';
 
@@ -20,27 +21,37 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => MaterialApp.router(
-        routeInformationProvider: rootRouter.routeInformationProvider,
-        routeInformationParser: rootRouter.routeInformationParser,
-        routerDelegate: rootRouter.routerDelegate,
-        title: 'Login Example',
-        localizationsDelegates: const [
-          S.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: S.delegate.supportedLocales,
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          appBarTheme: const AppBarTheme(
-              color: Colors.white,
-              iconTheme: IconThemeData(color: Colors.black),
-              titleTextStyle: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20)),
-        ),
+  Widget build(BuildContext context) => ScreenUtilInit(
+        minTextAdapt: true,
+        builder: (context, child) {
+          var textTheme = Typography.tall2018.apply(fontSizeFactor: 1.sp);
+
+          return MaterialApp.router(
+            routeInformationProvider: rootRouter.routeInformationProvider,
+            routeInformationParser: rootRouter.routeInformationParser,
+            routerDelegate: rootRouter.routerDelegate,
+            title: 'Login Example',
+            localizationsDelegates: const [
+              S.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: S.delegate.supportedLocales,
+            theme: ThemeData(
+                primarySwatch: Colors.blue,
+                appBarTheme: AppBarTheme(
+                    color: Colors.white,
+                    iconTheme: const IconThemeData(color: Colors.black),
+                    titleTextStyle:
+                        textTheme.titleLarge?.copyWith(color: Colors.black)),
+                textTheme: textTheme,
+                pageTransitionsTheme: const PageTransitionsTheme(
+                  builders: <TargetPlatform, PageTransitionsBuilder>{
+                    TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+                  },
+                )),
+          );
+        },
       );
 }

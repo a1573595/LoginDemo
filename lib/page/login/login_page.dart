@@ -82,7 +82,7 @@ class _LoginBody extends ConsumerWidget {
                 padding: const EdgeInsets.symmetric(vertical: 64),
                 child: Text(
                   S.current.welcome_back,
-                  style: const TextStyle(color: Colors.white, fontSize: 32),
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: Colors.white),
                 ),
               ),
             ],
@@ -107,11 +107,7 @@ class _LoginBody extends ConsumerWidget {
                 children: [
                   Text(
                     S.current.sign_in,
-                    style: const TextStyle(
-                      color: Color(0xff4c505b),
-                      fontSize: 27,
-                      fontWeight: FontWeight.w700,
-                    ),
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w700),
                   ),
                   CircleAvatar(
                     radius: 30,
