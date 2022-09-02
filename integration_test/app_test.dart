@@ -30,14 +30,12 @@ void main() {
 
       /// 比對元件
       expect(find.byType(LoginPage), findsOneWidget);
-      expect(find.text("Welcome\nBack"), findsOneWidget);
+      expect(find.text(S.current.welcome_back), findsOneWidget);
 
       /// 尋找指定元件
       var loginButton = find.byIcon(Icons.arrow_forward);
       var accountTextField = find.byType(TextField).first;
       var passwordTextField = find.byType(TextField).at(1);
-
-      expect(find.text(S.current.welcome_back), findsOneWidget);
 
       /// 按下指定元件
       await safeTap.call(tester, loginButton);

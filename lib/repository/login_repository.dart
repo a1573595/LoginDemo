@@ -5,15 +5,17 @@ import '../api/api_client.dart';
 import '../model/login_res.dart';
 import '../utils/shared_prefs.dart';
 
-final loginRepository = Provider((ref) => LoginRepository(ref));
+final loginRepository = Provider((ref) => LoginRepository());
 
 class LoginRepository {
-  LoginRepository(this.ref);
+  LoginRepository({ApiClient? apiClient}) {
+    this.apiClient = apiClient ?? ApiClient();
+  }
 
-  final Ref ref;
+  late ApiClient apiClient;
 
   Future<LoginRes> login(String account, String password) async {
-    LoginRes res = await ApiClient().login(LoginReq(account, password));
+    LoginRes res = await apiClient.login(LoginReq(account, password));
 
     if (res.isLoginSuccess) {
       await sharedPrefs.setAccount(account);
