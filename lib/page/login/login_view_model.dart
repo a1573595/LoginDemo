@@ -31,12 +31,8 @@ class LoginViewModel extends StateNotifier<AsyncValue<LoginRes>> {
     var isAccountError = _checkAccount(account);
     var isPasswordError = _checkPassword(password);
 
-    ref
-        .read(_isAccountError.state)
-        .state = isAccountError;
-    ref
-        .read(_isPasswordError.state)
-        .state = isPasswordError;
+    ref.read(_isAccountError.state).state = isAccountError;
+    ref.read(_isPasswordError.state).state = isPasswordError;
 
     if (!isAccountError && !isPasswordError) {
       logger.i('Event: Login');
@@ -51,10 +47,12 @@ class LoginViewModel extends StateNotifier<AsyncValue<LoginRes>> {
   }
 
   @override
-  bool updateShouldNotify(AsyncValue<LoginRes> old, AsyncValue<LoginRes> current) {
+  bool updateShouldNotify(
+      AsyncValue<LoginRes> old, AsyncValue<LoginRes> current) {
     return true;
   }
 }
 
-final _loginViewModel = StateNotifierProvider.autoDispose<LoginViewModel, AsyncValue<LoginRes>>((ref) =>
-    LoginViewModel(ref));
+final _loginViewModel =
+    StateNotifierProvider.autoDispose<LoginViewModel, AsyncValue<LoginRes>>(
+        (ref) => LoginViewModel(ref));

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:login/utils/edge_util.dart';
@@ -42,6 +43,8 @@ class _LoginBody extends ConsumerWidget {
   final TextEditingController _accountController =
       TextEditingController(text: sharedPrefs.getAccount());
   final TextEditingController _passwordController = TextEditingController();
+
+  final FocusNode _passwordFocusNode = FocusNode();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -92,11 +95,11 @@ class _LoginBody extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Spacer(),
-              _AccountTextField(_accountController),
+              _AccountAutoComplete(_accountController, _passwordFocusNode),
               const SizedBox(
                 height: 32,
               ),
-              _PasswordTextField(_passwordController),
+              _PasswordTextField(_passwordController, _passwordFocusNode),
               const SizedBox(
                 height: 48,
               ),
@@ -183,15 +186,120 @@ class _LoginBody extends ConsumerWidget {
   }
 }
 
-class _AccountTextField extends ConsumerWidget {
-  const _AccountTextField(this._controller, {Key? key}) : super(key: key);
+class _AccountAutoComplete extends ConsumerWidget {
+  _AccountAutoComplete(this._controller, this._passwordFocusNode, {Key? key})
+      : super(key: key);
 
   final TextEditingController _controller;
+  final FocusNode _passwordFocusNode;
+
+  final FocusNode _focusNode = FocusNode();
+
+  final List<String> emailSuffix = const [
+    '@gmail.com',
+    '@outlook.com',
+    '@hotmail.com',
+    '@yahoo.com',
+  ];
+
+  final List<String> autoCompleteResult = [
+    '@gmail.com',
+    '@outlook.com',
+    '@hotmail.com',
+    '@yahoo.com',
+  ];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return TextField(
+    return RawAutocomplete<String>(
+        textEditingController: _controller,
+        focusNode: _focusNode,
+
+        /// 選項
+        optionsBuilder: (textField) {
+          /// TODO('如何將這裡的邏輯放到ViewModel？')
+          var text = textField.text;
+
+          if (text.isEmpty) {
+            return const [];
+          } else {
+            for (var i = 0; i < emailSuffix.length; i++) {
+              autoCompleteResult[i] = text.split('@')[0] + emailSuffix[i];
+            }
+            return autoCompleteResult;
+          }
+        },
+
+        /// 選項Widget
+        optionsViewBuilder: (context, onAutoCompleteSelect, options) => Align(
+            alignment: Alignment.topLeft,
+            child: Material(
+              color: Colors.white,
+              elevation: 2,
+              child: SizedBox(
+                  width: MediaQuery.of(context).size.width - 48,
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    padding: const EdgeInsets.all(0),
+                    itemCount: options.length,
+                    separatorBuilder: (context, index) {
+                      return const SizedBox();
+                    },
+                    itemBuilder: (BuildContext context, int index) {
+                      return ListTile(
+                        title: Text(options.elementAt(index)),
+                        onTap: () {
+                          _controller.text = options.elementAt(index);
+                          _controller.selection = TextSelection.fromPosition(
+                              TextPosition(offset: _controller.text.length));
+
+                          /// 這裡用nextFocus會失效
+                          _passwordFocusNode.requestFocus();
+                        },
+                      );
+                    },
+                  )),
+            )),
+
+        /// 輸入框Widget
+        fieldViewBuilder: (context, controller, focusNode, onFieldSubmitted) =>
+            _AccountTextFormField(controller, focusNode));
+  }
+}
+
+class _AccountTextFormField extends ConsumerWidget {
+  const _AccountTextFormField(this._controller, this._focusNode, {Key? key})
+      : super(key: key);
+
+  final TextEditingController _controller;
+  final FocusNode _focusNode;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return TextFormField(
       controller: _controller,
+      focusNode: _focusNode,
+      autofocus: true,
+
+      /// 輸入文字類型
+      keyboardType: TextInputType.emailAddress,
+
+      /// 鍵盤下一步類型
+      textInputAction: TextInputAction.next,
+
+      /// 輸入格式過濾
+      inputFormatters: [
+        LengthLimitingTextInputFormatter(32),
+        FilteringTextInputFormatter.allow(RegExp("[0-9a-zA-Z@._]"))
+      ],
+
+      /// 下一步按鍵的callback
+      onFieldSubmitted: (value) {
+        /// 前往下一個焦點
+        FocusScope.of(context).nextFocus();
+      },
+
+      /// 當輸入框異動時
       onChanged: (value) {
         ref.read(_isAccountRemoveable.state).state = value.isNotEmpty;
       },
@@ -226,14 +334,19 @@ class _AccountTextField extends ConsumerWidget {
 }
 
 class _PasswordTextField extends ConsumerWidget {
-  const _PasswordTextField(this._controller, {Key? key}) : super(key: key);
+  const _PasswordTextField(this._controller, this._passwordFocusNode,
+      {Key? key})
+      : super(key: key);
 
   final TextEditingController _controller;
+  final FocusNode _passwordFocusNode;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return TextField(
       controller: _controller,
+      focusNode: _passwordFocusNode,
+      textInputAction: TextInputAction.done,
       onChanged: (value) {
         ref.read(_isPasswordRemoveable.state).state = value.isNotEmpty;
       },
