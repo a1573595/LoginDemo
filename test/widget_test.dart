@@ -85,7 +85,7 @@ void main() async {
       await tester.enterText(passwordTextField, password);
       await tester.safeTap(loginButton);
 
-      /// 等待sharedPrefs寫入資料
+      /// 讓Provider有時間可以反應到Widget上
       await tester.pumpAndSettle();
 
       expect(find.text(S.current.please_enter_account), findsNothing);

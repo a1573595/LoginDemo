@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:integration_test/integration_test.dart';
 import 'package:login/generated/l10n.dart';
 
 import 'package:login/main.dart' as app;
@@ -12,12 +13,15 @@ import 'package:mockito/mockito.dart';
 class MockNavigatorObserver extends Mock implements NavigatorObserver {}
 
 void main() {
-  // IntegrationTestWidgetsFlutterBinding.ensureInitialized();
-
   group('end-to-end test', () {
+    IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+
     testWidgets('Login test', (tester) async {
-      /// launch app
+      /// launch App
       app.main();
+
+      /// 這樣launch也可以，但會跳過部分初始化步驟因此不建議
+      // await tester.pumpWidget(const ProviderScope(child: MyApp()));
 
       /// 觸發畫面刷新
       await tester.pumpAndSettle();
