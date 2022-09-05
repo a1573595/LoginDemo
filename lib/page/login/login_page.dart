@@ -13,6 +13,7 @@ import '../../repository/login_repository.dart';
 import '../../router/app_page.dart';
 import '../../utils/images.dart';
 import '../../utils/shared_prefs.dart';
+import '../../widget/shake_widget.dart';
 
 part 'login_view_model.dart';
 
@@ -95,11 +96,19 @@ class _LoginBody extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Spacer(),
-              _AccountAutoComplete(_accountController, _passwordFocusNode),
+              ShakeWidget(
+                provider: _isAccountError,
+                child: _AccountAutoComplete(
+                    _accountController, _passwordFocusNode),
+              ),
+              // _AccountAutoComplete(_accountController, _passwordFocusNode),
               const SizedBox(
                 height: 32,
               ),
-              _PasswordTextField(_passwordController, _passwordFocusNode),
+              ShakeWidget(
+                  provider: _isPasswordError,
+                  child: _PasswordTextField(
+                      _passwordController, _passwordFocusNode)),
               const SizedBox(
                 height: 48,
               ),
@@ -279,7 +288,7 @@ class _AccountTextFormField extends ConsumerWidget {
     return TextFormField(
       controller: _controller,
       focusNode: _focusNode,
-      autofocus: true,
+      autofocus: _controller.text.isEmpty,
 
       /// 輸入文字類型
       keyboardType: TextInputType.emailAddress,
@@ -304,12 +313,23 @@ class _AccountTextFormField extends ConsumerWidget {
         ref.read(_isAccountRemoveable.state).state = value.isNotEmpty;
       },
       decoration: InputDecoration(
-          fillColor: Colors.grey.shade100,
+
+          /// 是否使用輸入框背景
+          /// 預設透明
           filled: true,
+
+          /// 框入框背景色
+          fillColor: Colors.grey.shade100,
+
+          /// 提示文字
           hintText: S.current.account,
+
+          /// 錯誤提示文字
           errorText: ref.watch(_isAccountError)
               ? S.current.please_enter_account
               : null,
+
+          /// 輸入框邊框
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -350,6 +370,8 @@ class _PasswordTextField extends ConsumerWidget {
       onChanged: (value) {
         ref.read(_isPasswordRemoveable.state).state = value.isNotEmpty;
       },
+
+      /// 是否模糊文字
       obscureText: !ref.watch(_isPasswordVisible.state).state,
       decoration: InputDecoration(
           fillColor: Colors.grey.shade100,
