@@ -1,10 +1,4 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -14,14 +8,17 @@ import 'package:login/logger/logger.dart';
 
 import 'package:login/page/login/login_page.dart';
 import 'package:login/page/welcome/welcome_page.dart';
-import 'package:login/utils/edge_util.dart';
 import 'package:login/utils/shared_prefs.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
+  /// 建構可測試Widget
+  /// 針對單一頁面設定MaterialApp、BotToast
   Widget createWidgetForTesting(Widget child) {
     return MaterialApp(
       home: child,
+      builder: BotToastInit(),
+      navigatorObservers: [BotToastNavigatorObserver()],
     );
   }
 
@@ -33,11 +30,6 @@ void main() async {
 
     SharedPreferences.setMockInitialValues({});
     await sharedPrefs.init();
-
-    /// 無法取得ScreenUtil要自行賦值
-    edgeUtil.screenHorizontal = 32;
-    edgeUtil.screenHorizontalPadding =
-        EdgeInsets.symmetric(horizontal: edgeUtil.screenHorizontal);
   });
 
   var account = "Chien@gmail.com";
@@ -45,6 +37,8 @@ void main() async {
 
   group('Widget test', () {
     testWidgets('LoginPage', (WidgetTester tester) async {
+      // count = 0;
+
       /// 載入Widget
       await tester.pumpWidget(
           ProviderScope(child: createWidgetForTesting(const LoginPage())));

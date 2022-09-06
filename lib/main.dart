@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) => ScreenUtilInit(
         minTextAdapt: true,
         builder: (context, child) {
-          edgeUtil.init();
+          EdgeUtil.initAfterScreenUtil();
           var textTheme = Typography.tall2018.apply(fontSizeFactor: 1.sp);
 
           String? lastLocation;
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
           });
 
           return MaterialApp.router(
+            builder: BotToastInit(),
             routeInformationProvider: rootRouter.routeInformationProvider,
             routeInformationParser: rootRouter.routeInformationParser,
             routerDelegate: rootRouter.routerDelegate,

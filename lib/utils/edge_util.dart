@@ -1,15 +1,14 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-final edgeUtil = _EdgeUtil();
-
 /// EdgeUtil需要等待ScreenUtilInit
-class _EdgeUtil {
-  late double screenHorizontal;
+class EdgeUtil {
+  static double screenHorizontal = 32;
 
-  late EdgeInsets screenHorizontalPadding;
+  static EdgeInsets screenHorizontalPadding =
+      EdgeInsets.symmetric(horizontal: screenHorizontal);
 
-  init() {
+  static initAfterScreenUtil() {
     screenHorizontal = 32.r;
 
     screenHorizontalPadding =

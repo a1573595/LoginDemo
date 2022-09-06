@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:go_router/go_router.dart';
 
 import '../page/console/log_console_page.dart';
@@ -11,7 +12,7 @@ const pageLogin = '/login';
 const pageWelcome = '/welcome';
 
 final GoRouter rootRouter = GoRouter(
-
+    observers: [BotToastNavigatorObserver()],
     /// 初始路徑
     // initialLocation: sharedPrefs.getIsLogin() != true ? pageLogin : pageWelcome,
     routes: [

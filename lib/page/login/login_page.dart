@@ -13,6 +13,7 @@ import '../../repository/login_repository.dart';
 import '../../router/app_page.dart';
 import '../../utils/images.dart';
 import '../../utils/shared_prefs.dart';
+import '../../utils/dialog_util.dart';
 import '../../widget/shake_widget.dart';
 
 part 'login_view_model.dart';
@@ -23,7 +24,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LogConsoleOnShake(Container(
-      padding: edgeUtil.screenHorizontalPadding,
+      padding: EdgeUtil.screenHorizontalPadding,
       decoration: const BoxDecoration(
         image:
             DecorationImage(image: AssetImage(Images.login), fit: BoxFit.cover),
@@ -39,7 +40,7 @@ class LoginPage extends StatelessWidget {
 class _LoginBody extends ConsumerWidget {
   _LoginBody({Key? key}) : super(key: key);
 
-  bool _isOpen = false;
+  // bool _isOpen = false;
 
   final TextEditingController _accountController =
       TextEditingController(text: sharedPrefs.getAccount());
@@ -50,22 +51,30 @@ class _LoginBody extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen(_loginViewModel, (previous, next) {
-      if (_isOpen) {
-        Navigator.of(context).pop();
-      }
-
       if (next is AsyncValue<LoginRes>) {
         next.when(
           data: (data) {
+            // if (_isOpen) {
+            //   Navigator.of(context).pop();
+            // }
+            DialogUtil.cancelLoading();
+
             if (data.isLoginSuccess) {
               context.go(AppPage.welcome.fullPath);
             } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(S.current.login_failed)));
+              DialogUtil.showToast(S.current.login_failed);
+
+              /// Flutter原生SnackBar
+              // ScaffoldMessenger.of(context).showSnackBar(
+              //     SnackBar(content: Text(S.current.login_failed)));
             }
           },
-          loading: () => showLoaderDialog(context),
-          error: (e, _) => Text(e.toString()),
+          // loading: () => showLoaderDialog(context),
+          loading: () => DialogUtil.showLoading(),
+          error: (e, _) {
+            DialogUtil.cancelLoading();
+            DialogUtil.showToast(e.toString());
+          },
         );
       }
     });
@@ -172,27 +181,36 @@ class _LoginBody extends ConsumerWidget {
     );
   }
 
-  void showLoaderDialog(BuildContext context) {
-    _isOpen = true;
-
-    AlertDialog alert = AlertDialog(
-      content: Row(
-        children: [
-          const CircularProgressIndicator(),
-          Container(
-              margin: const EdgeInsets.only(left: 20),
-              child: Text(S.current.loading)),
-        ],
-      ),
-    );
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    ).then((value) => _isOpen = false);
-  }
+  /// Flutter原生Dialog
+  /// 需要綁定context，換頁後不會保留
+// void showLoaderDialog(BuildContext context) {
+//   _isOpen = true;
+//
+//   /// 防止被Back取消
+//   Widget alert = WillPopScope(
+//     onWillPop: () async {
+//       return false;
+//     },
+//     child: AlertDialog(
+//       content: Row(
+//         children: [
+//           const CircularProgressIndicator(),
+//           Container(
+//               margin: const EdgeInsets.only(left: 20),
+//               child: Text(S.current.loading)),
+//         ],
+//       ),
+//     ),
+//   );
+//   showDialog(
+//     /// 點擊外圍是否可以取消
+//     barrierDismissible: false,
+//     context: context,
+//     builder: (BuildContext context) {
+//       return alert;
+//     },
+//   ).then((value) => _isOpen = false);
+// }
 }
 
 class _AccountAutoComplete extends ConsumerWidget {

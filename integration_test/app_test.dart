@@ -30,7 +30,9 @@ void main() {
       expect(find.byType(SplashPage), findsOneWidget);
 
       tester.binding.scheduleWarmUpFrame();
-      await tester.pumpAndSettle(const Duration(seconds: 3));
+      await tester.pump();
+      await tester.pumpAndSettle(const Duration(seconds: 2));
+      await tester.pump();
 
       /// 比對元件
       expect(find.byType(LoginPage), findsOneWidget);
@@ -49,7 +51,8 @@ void main() {
       await tester.enterText(accountTextField, '');
       await tester.pump();
       await tester.enterText(passwordTextField, '');
-      await tester.pump();
+      /// 讓Provider有時間可以反應到Widget上
+      await tester.pumpAndSettle();
 
       expect(find.text(S.current.please_enter_account), findsOneWidget);
       expect(find.text(S.current.please_enter_password), findsOneWidget);
@@ -59,10 +62,7 @@ void main() {
       await tester.enterText(passwordTextField, 'abc12345');
       await tester.pump();
       await safeTap.call(tester, loginButton);
-      await tester.pump();
-
-      /// 等待API回來
-      await tester.pumpAndSettle(const Duration(seconds: 3));
+      await tester.pumpAndSettle();
 
       expect(find.byType(WelcomePage), findsOneWidget);
 
