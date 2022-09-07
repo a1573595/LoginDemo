@@ -112,7 +112,6 @@ class _LoginBody extends ConsumerWidget {
                 child: _AccountAutoComplete(
                     _accountController, _passwordFocusNode),
               ),
-              // _AccountAutoComplete(_accountController, _passwordFocusNode),
               const SizedBox(
                 height: 32,
               ),
@@ -133,16 +132,23 @@ class _LoginBody extends ConsumerWidget {
                         .headlineSmall
                         ?.copyWith(fontWeight: FontWeight.w700),
                   ),
-                  CircleAvatar(
-                    radius: 30,
-                    backgroundColor: const Color(0xff4c505b),
-                    child: IconButton(
-                      color: Colors.white,
-                      onPressed: () => ref.read(_loginViewModel.notifier).login(
-                          _accountController.text, _passwordController.text),
-                      icon: const Icon(Icons.arrow_forward),
-                    ),
-                  ),
+
+                  /// 可拖曳Widget
+                  Draggable(
+                      feedback: const FloatingActionButton(
+                          backgroundColor: Color(0xff4c505b),
+                          onPressed: null,
+                          child: Icon(Icons.arrow_forward)),
+                      childWhenDragging: const SizedBox(
+                        height: 56,
+                      ),
+                      child: FloatingActionButton(
+                          backgroundColor: const Color(0xff4c505b),
+                          child: const Icon(Icons.arrow_forward),
+                          onPressed: () => ref
+                              .read(_loginViewModel.notifier)
+                              .login(_accountController.text,
+                                  _passwordController.text))),
                 ],
               ),
               const SizedBox(
