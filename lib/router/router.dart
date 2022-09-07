@@ -1,6 +1,8 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
+import '../utils/prefs_box.dart';
 import '../page/console/log_console_page.dart';
 import '../page/splash/splash_page.dart';
 import '../page/login/login_page.dart';
@@ -13,8 +15,10 @@ const pageWelcome = '/welcome';
 
 final GoRouter rootRouter = GoRouter(
     observers: [BotToastNavigatorObserver()],
+
     /// 初始路徑
     // initialLocation: sharedPrefs.getIsLogin() != true ? pageLogin : pageWelcome,
+    // initialLocation: prefsBox.getIsLogin() != true ? pageLogin : pageWelcome,
     routes: [
       GoRoute(
         name: AppPage.splash.name,

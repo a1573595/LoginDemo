@@ -13,7 +13,7 @@ void main() {
     test("get value", () async {
       expect(sharedPrefs.getUserName(), isNull);
       expect(sharedPrefs.getAccount(), isNull);
-      expect(sharedPrefs.getIsLogin(), isNull);
+      expect(sharedPrefs.getIsLogin(), null);
     });
 
     test("set value", () async {

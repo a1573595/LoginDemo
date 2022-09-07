@@ -2,11 +2,12 @@ part of 'login_page.dart';
 
 var _isPasswordVisible = StateProvider.autoDispose((ref) => false);
 
-var _isAccountRemoveable = StateProvider.autoDispose((ref) {
-  var account = sharedPrefs.getAccount();
+var _isAccountClearable = StateProvider.autoDispose((ref) {
+  // var account = sharedPrefs.getAccount();
+  var account = prefsBox.getAccount();
   return account != null && account.isNotEmpty;
 });
-var _isPasswordRemoveable = StateProvider.autoDispose((ref) => false);
+var _isPasswordClearable = StateProvider.autoDispose((ref) => false);
 
 var _isAccountError = StateProvider.autoDispose((ref) => false);
 var _isPasswordError = StateProvider.autoDispose((ref) => false);

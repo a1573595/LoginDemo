@@ -7,6 +7,7 @@ import '../../generated/l10n.dart';
 import '../../repository/login_repository.dart';
 import '../../router/app_page.dart';
 import '../../utils/images.dart';
+import '../../utils/prefs_box.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({Key? key}) : super(key: key);
@@ -34,7 +35,8 @@ class WelcomePage extends StatelessWidget {
               ),
               Expanded(
                   child: Center(
-                      child: Text('${sharedPrefs.getUserName()}',
+                      // child: Text('${sharedPrefs.getUserName()}',
+                      child: Text('${prefsBox.getUserName()}',
                           style: const TextStyle(
                               fontSize: 48, color: Colors.white)))),
               const Align(
@@ -79,8 +81,8 @@ class _LogoutTextState extends State<LogoutText> {
 
     /// 判斷View是否還存在
     if (!mounted) return;
-    if (result.isNotEmpty && !result.any((element) => false)) {
-      GoRouter.of(context).go(AppPage.login.fullPath);
-    }
+    // if (!result.any((element) => false)) {
+    GoRouter.of(context).go(AppPage.login.fullPath);
+    // }
   }
 }

@@ -24,22 +24,16 @@ void main() {
       // await tester.pumpWidget(const ProviderScope(child: MyApp()));
 
       /// 等待套件初始化後載入Splash
-      var lock = true;
-      while (lock) {
-        if (tester.any(find.byType(SplashPage))) {
-          lock = false;
-        } else {
-          await tester.pumpAndSettle();
-        }
+      while (!tester.any(find.byType(SplashPage))) {
+        await tester.pumpAndSettle();
       }
 
       /// 比對頁面
       expect(find.byType(SplashPage), findsOneWidget);
 
+      /// 等待addPostFrameCallback
       tester.binding.scheduleWarmUpFrame();
-      await tester.pump();
       await tester.pumpAndSettle(const Duration(seconds: 2));
-      await tester.pump();
 
       /// 比對元件
       expect(find.byType(LoginPage), findsOneWidget);

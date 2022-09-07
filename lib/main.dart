@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:login/router/router.dart';
 import 'package:login/utils/edge_util.dart';
 import 'package:login/utils/shared_prefs.dart';
 
+import 'utils/prefs_box.dart';
 import 'generated/l10n.dart';
 import 'logger/logger.dart';
 
@@ -14,7 +16,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await logger.init();
-  await sharedPrefs.init();
+  // await sharedPrefs.init();
+
+  await Hive.initFlutter();
+  await prefsBox.init();
 
   logger.i('Start App');
   runApp(const ProviderScope(child: MyApp()));

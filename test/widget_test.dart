@@ -2,14 +2,18 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:logger/logger.dart';
 import 'package:login/generated/l10n.dart';
 import 'package:login/logger/logger.dart';
 
 import 'package:login/page/login/login_page.dart';
 import 'package:login/page/welcome/welcome_page.dart';
+import 'package:login/utils/prefs_box.dart';
 import 'package:login/utils/shared_prefs.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'directory.dart';
 
 void main() async {
   /// 建構可測試Widget
@@ -28,8 +32,17 @@ void main() async {
   setUp(() async {
     await logger.init(logger: Logger(level: Level.error));
 
-    SharedPreferences.setMockInitialValues({});
-    await sharedPrefs.init();
+    // SharedPreferences.setMockInitialValues({});
+    // await sharedPrefs.init();
+
+    var dir = await getTempDir();
+    Hive.init(dir.path);
+    await prefsBox.init();
+  });
+
+  tearDown(() async {
+    /// 清除緩存
+    await Hive.deleteFromDisk();
   });
 
   var account = "Chien@gmail.com";
@@ -37,8 +50,6 @@ void main() async {
 
   group('Widget test', () {
     testWidgets('LoginPage', (WidgetTester tester) async {
-      // count = 0;
-
       /// 載入Widget
       await tester.pumpWidget(
           ProviderScope(child: createWidgetForTesting(const LoginPage())));
@@ -88,7 +99,10 @@ void main() async {
 
     testWidgets('WelcomePage', (WidgetTester tester) async {
       var userName = 'Chien';
-      await sharedPrefs.setUserName(userName);
+
+      // await sharedPrefs.setUserName(userName);
+      /// 在testWidgets中要使用tester.runAsync才能進行box存取
+      await tester.runAsync(() => prefsBox.setUserName(userName));
 
       await tester.pumpWidget(
           ProviderScope(child: createWidgetForTesting(const WelcomePage())));

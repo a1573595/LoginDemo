@@ -12,6 +12,7 @@ import '../../model/login_res.dart';
 import '../../repository/login_repository.dart';
 import '../../router/app_page.dart';
 import '../../utils/images.dart';
+import '../../utils/prefs_box.dart';
 import '../../utils/shared_prefs.dart';
 import '../../utils/dialog_util.dart';
 import '../../widget/shake_widget.dart';
@@ -43,7 +44,8 @@ class _LoginBody extends ConsumerWidget {
   // bool _isOpen = false;
 
   final TextEditingController _accountController =
-      TextEditingController(text: sharedPrefs.getAccount());
+      // TextEditingController(text: sharedPrefs.getAccount());
+      TextEditingController(text: prefsBox.getAccount());
   final TextEditingController _passwordController = TextEditingController();
 
   final FocusNode _passwordFocusNode = FocusNode();
@@ -328,7 +330,7 @@ class _AccountTextFormField extends ConsumerWidget {
 
       /// 當輸入框異動時
       onChanged: (value) {
-        ref.read(_isAccountRemoveable.state).state = value.isNotEmpty;
+        ref.read(_isAccountClearable.state).state = value.isNotEmpty;
       },
       decoration: InputDecoration(
 
@@ -355,11 +357,11 @@ class _AccountTextFormField extends ConsumerWidget {
             child: Material(
               color: Colors.transparent,
               child: Consumer(builder: (context, ref, child) {
-                return ref.watch(_isAccountRemoveable.state).state
+                return ref.watch(_isAccountClearable.state).state
                     ? IconButton(
                         onPressed: () {
                           _controller.clear();
-                          ref.read(_isAccountRemoveable.state).state = false;
+                          ref.read(_isAccountClearable.state).state = false;
                         },
                         icon: const Icon(Icons.cancel),
                       )
@@ -386,7 +388,7 @@ class _PasswordTextField extends ConsumerWidget {
       focusNode: _passwordFocusNode,
       textInputAction: TextInputAction.done,
       onChanged: (value) {
-        ref.read(_isPasswordRemoveable.state).state = value.isNotEmpty;
+        ref.read(_isPasswordClearable.state).state = value.isNotEmpty;
       },
 
       /// 是否模糊文字
@@ -422,11 +424,11 @@ class _PasswordTextField extends ConsumerWidget {
                 child: Material(
                   color: Colors.transparent,
                   child: Consumer(builder: (context, ref, child) {
-                    return ref.watch(_isPasswordRemoveable.state).state
+                    return ref.watch(_isPasswordClearable.state).state
                         ? IconButton(
                             onPressed: () {
                               _controller.clear();
-                              ref.read(_isPasswordRemoveable.state).state =
+                              ref.read(_isPasswordClearable.state).state =
                                   false;
                             },
                             icon: const Icon(Icons.cancel),
