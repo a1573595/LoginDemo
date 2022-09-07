@@ -298,16 +298,19 @@ class _AccountAutoComplete extends ConsumerWidget {
 
         /// 輸入框Widget
         fieldViewBuilder: (context, controller, focusNode, onFieldSubmitted) =>
-            _AccountTextFormField(controller, focusNode));
+            _AccountTextFormField(controller, focusNode, _passwordFocusNode));
   }
 }
 
 class _AccountTextFormField extends ConsumerWidget {
-  const _AccountTextFormField(this._controller, this._focusNode, {Key? key})
+  const _AccountTextFormField(
+      this._controller, this._focusNode, this._passwordFocusNode,
+      {Key? key})
       : super(key: key);
 
   final TextEditingController _controller;
   final FocusNode _focusNode;
+  final FocusNode _passwordFocusNode;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -331,9 +334,16 @@ class _AccountTextFormField extends ConsumerWidget {
       /// 下一步按鍵的callback
       onFieldSubmitted: (value) {
         /// 前往下一個焦點
-        FocusScope.of(context).nextFocus();
+        /// 若沒有內容則FocusScope會失效
+        /// 要使用FocusNode
+        // FocusScope.of(context).nextFocus();
+        _passwordFocusNode.requestFocus();
       },
 
+      /// 編輯完成的callback
+      // onEditingComplete: () {
+      //   FocusScope.of(context).nextFocus();
+      // },
       /// 當輸入框異動時
       onChanged: (value) {
         ref.read(_isAccountClearable.state).state = value.isNotEmpty;

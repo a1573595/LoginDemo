@@ -46,10 +46,8 @@ void main() {
 
       /// 按下指定元件
       await safeTap.call(tester, loginButton);
-      await tester.pump();
-
       /// 讓Provider有時間可以反應到Widget上
-      await tester.pumpAndSettle();
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
       expect(find.text(S.current.please_enter_account), findsOneWidget);
       expect(find.text(S.current.please_enter_password), findsOneWidget);
@@ -60,7 +58,7 @@ void main() {
       await tester.enterText(passwordTextField, 'abc12345');
       await tester.pump();
       await safeTap.call(tester, loginButton);
-      await tester.pumpAndSettle();
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
       expect(find.byType(WelcomePage), findsOneWidget);
 
