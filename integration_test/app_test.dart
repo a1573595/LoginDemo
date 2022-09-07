@@ -23,8 +23,15 @@ void main() {
       /// 這樣launch也可以，但會跳過部分初始化步驟因此不建議
       // await tester.pumpWidget(const ProviderScope(child: MyApp()));
 
-      /// 觸發畫面刷新
-      await tester.pumpAndSettle();
+      /// 等待套件初始化後載入Splash
+      var lock = true;
+      while (lock) {
+        if (tester.any(find.byType(SplashPage))) {
+          lock = false;
+        } else {
+          await tester.pumpAndSettle();
+        }
+      }
 
       /// 比對頁面
       expect(find.byType(SplashPage), findsOneWidget);
@@ -47,16 +54,13 @@ void main() {
       await safeTap.call(tester, loginButton);
       await tester.pump();
 
-      /// 輸入內容至指定元件
-      await tester.enterText(accountTextField, '');
-      await tester.pump();
-      await tester.enterText(passwordTextField, '');
       /// 讓Provider有時間可以反應到Widget上
       await tester.pumpAndSettle();
 
       expect(find.text(S.current.please_enter_account), findsOneWidget);
       expect(find.text(S.current.please_enter_password), findsOneWidget);
 
+      /// 輸入內容至指定元件
       await tester.enterText(accountTextField, 'Chien@gmail.com');
       await tester.pump();
       await tester.enterText(passwordTextField, 'abc12345');
