@@ -325,6 +325,9 @@ class _AccountTextFormField extends ConsumerWidget {
       /// 鍵盤下一步類型
       textInputAction: TextInputAction.next,
 
+      /// 禁止複製貼上等選項
+      enableInteractiveSelection: false,
+
       /// 輸入格式過濾
       inputFormatters: [
         LengthLimitingTextInputFormatter(32),
@@ -403,6 +406,7 @@ class _PasswordTextField extends ConsumerWidget {
       controller: _controller,
       focusNode: _passwordFocusNode,
       textInputAction: TextInputAction.done,
+      enableInteractiveSelection: false,
       onChanged: (value) {
         ref.read(_isPasswordClearable.state).state = value.isNotEmpty;
       },
