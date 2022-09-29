@@ -65,10 +65,6 @@ class _LoginBody extends ConsumerWidget {
               context.go(AppPage.welcome.fullPath);
             } else {
               DialogUtil.showToast(S.current.login_failed);
-
-              /// Flutter原生SnackBar
-              // ScaffoldMessenger.of(context).showSnackBar(
-              //     SnackBar(content: Text(S.current.login_failed)));
             }
           },
           // loading: () => showLoaderDialog(context),

@@ -45,9 +45,7 @@ class MyApp extends StatelessWidget {
 
           return MaterialApp.router(
             builder: BotToastInit(),
-            routeInformationProvider: rootRouter.routeInformationProvider,
-            routeInformationParser: rootRouter.routeInformationParser,
-            routerDelegate: rootRouter.routerDelegate,
+            routerConfig: rootRouter,
             title: 'Login Example',
             localizationsDelegates: const [
               S.delegate,

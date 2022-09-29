@@ -5,8 +5,9 @@ bool isDarkMode(BuildContext context) {
 }
 
 showSnackBar(BuildContext context, String message) {
+  /// Flutter原生SnackBar
   ScaffoldMessenger.of(context)
-    ..hideCurrentSnackBar()
+    ..removeCurrentSnackBar()
     ..showSnackBar(
       SnackBar(
         content: Text(message),
