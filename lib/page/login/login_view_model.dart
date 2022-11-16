@@ -32,8 +32,8 @@ class LoginViewModel extends StateNotifier<AsyncValue<LoginRes>> {
     var isAccountError = _checkAccount(account);
     var isPasswordError = _checkPassword(password);
 
-    ref.read(_isAccountError.state).state = isAccountError;
-    ref.read(_isPasswordError.state).state = isPasswordError;
+    ref.read(_isAccountError.notifier).state = isAccountError;
+    ref.read(_isPasswordError.notifier).state = isPasswordError;
 
     if (!isAccountError && !isPasswordError) {
       logger.i('Event: Login');
@@ -41,8 +41,8 @@ class LoginViewModel extends StateNotifier<AsyncValue<LoginRes>> {
         state = const AsyncValue.loading();
         final data = await ref.read(loginRepository).login(account, password);
         state = AsyncValue.data(data);
-      } catch (e) {
-        state = AsyncValue.error(e);
+      } catch (e, st) {
+        state = AsyncValue.error(e, st);
       }
     }
   }

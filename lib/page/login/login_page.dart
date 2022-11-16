@@ -345,7 +345,7 @@ class _AccountTextFormField extends ConsumerWidget {
       // },
       /// 當輸入框異動時
       onChanged: (value) {
-        ref.read(_isAccountClearable.state).state = value.isNotEmpty;
+        ref.read(_isAccountClearable.notifier).state = value.isNotEmpty;
       },
       decoration: InputDecoration(
 
@@ -372,11 +372,11 @@ class _AccountTextFormField extends ConsumerWidget {
             child: Material(
               color: Colors.transparent,
               child: Consumer(builder: (context, ref, child) {
-                return ref.watch(_isAccountClearable.state).state
+                return ref.watch(_isAccountClearable.notifier).state
                     ? IconButton(
                         onPressed: () {
                           _controller.clear();
-                          ref.read(_isAccountClearable.state).state = false;
+                          ref.read(_isAccountClearable.notifier).state = false;
                         },
                         icon: const Icon(Icons.cancel),
                       )
@@ -404,11 +404,11 @@ class _PasswordTextField extends ConsumerWidget {
       textInputAction: TextInputAction.done,
       enableInteractiveSelection: false,
       onChanged: (value) {
-        ref.read(_isPasswordClearable.state).state = value.isNotEmpty;
+        ref.read(_isPasswordClearable.notifier).state = value.isNotEmpty;
       },
 
       /// 是否模糊文字
-      obscureText: !ref.watch(_isPasswordVisible.state).state,
+      obscureText: !ref.watch(_isPasswordVisible.notifier).state,
       decoration: InputDecoration(
           fillColor: Colors.grey.shade100,
           filled: true,
@@ -427,10 +427,10 @@ class _PasswordTextField extends ConsumerWidget {
                   color: Colors.transparent,
                   child: IconButton(onPressed: () {
                     ref
-                        .read(_isPasswordVisible.state)
+                        .read(_isPasswordVisible.notifier)
                         .update((state) => !state);
                   }, icon: Consumer(builder: (context, ref, child) {
-                    return Icon(!ref.watch(_isPasswordVisible.state).state
+                    return Icon(!ref.watch(_isPasswordVisible.notifier).state
                         ? Icons.visibility
                         : Icons.visibility_off);
                   })),
@@ -440,11 +440,11 @@ class _PasswordTextField extends ConsumerWidget {
                 child: Material(
                   color: Colors.transparent,
                   child: Consumer(builder: (context, ref, child) {
-                    return ref.watch(_isPasswordClearable.state).state
+                    return ref.watch(_isPasswordClearable.notifier).state
                         ? IconButton(
                             onPressed: () {
                               _controller.clear();
-                              ref.read(_isPasswordClearable.state).state =
+                              ref.read(_isPasswordClearable.notifier).state =
                                   false;
                             },
                             icon: const Icon(Icons.cancel),
