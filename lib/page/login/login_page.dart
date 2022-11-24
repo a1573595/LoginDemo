@@ -372,7 +372,7 @@ class _AccountTextFormField extends ConsumerWidget {
             child: Material(
               color: Colors.transparent,
               child: Consumer(builder: (context, ref, child) {
-                return ref.watch(_isAccountClearable.notifier).state
+                return ref.watch(_isAccountClearable)
                     ? IconButton(
                         onPressed: () {
                           _controller.clear();
@@ -408,7 +408,7 @@ class _PasswordTextField extends ConsumerWidget {
       },
 
       /// 是否模糊文字
-      obscureText: !ref.watch(_isPasswordVisible.notifier).state,
+      obscureText: !ref.watch(_isPasswordVisible),
       decoration: InputDecoration(
           fillColor: Colors.grey.shade100,
           filled: true,
@@ -430,7 +430,7 @@ class _PasswordTextField extends ConsumerWidget {
                         .read(_isPasswordVisible.notifier)
                         .update((state) => !state);
                   }, icon: Consumer(builder: (context, ref, child) {
-                    return Icon(!ref.watch(_isPasswordVisible.notifier).state
+                    return Icon(!ref.watch(_isPasswordVisible)
                         ? Icons.visibility
                         : Icons.visibility_off);
                   })),
@@ -440,7 +440,7 @@ class _PasswordTextField extends ConsumerWidget {
                 child: Material(
                   color: Colors.transparent,
                   child: Consumer(builder: (context, ref, child) {
-                    return ref.watch(_isPasswordClearable.notifier).state
+                    return ref.watch(_isPasswordClearable)
                         ? IconButton(
                             onPressed: () {
                               _controller.clear();
