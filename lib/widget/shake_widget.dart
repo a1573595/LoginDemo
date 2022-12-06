@@ -3,21 +3,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 /// https://codewithandrea.com/articles/shake-text-effect-flutter/
-abstract class AnimationControllerState<T extends StatefulWidget>
-    extends State<T> with SingleTickerProviderStateMixin {
-  AnimationControllerState(this.animationDuration);
-
-  final Duration animationDuration;
-  late final animationController =
-      AnimationController(vsync: this, duration: animationDuration);
-
-  @override
-  void dispose() {
-    animationController.dispose();
-    super.dispose();
-  }
-}
-
 typedef ShackBuilder = void Function(void Function() shakeMethod);
 
 class ShakeWidget extends StatefulWidget {
@@ -37,21 +22,28 @@ class ShakeWidget extends StatefulWidget {
   final Duration shakeDuration;
 
   @override
-  State<ShakeWidget> createState() => _ShakeWidgetState(shakeDuration);
+  State<ShakeWidget> createState() => _ShakeWidgetState();
 }
 
-class _ShakeWidgetState extends AnimationControllerState<ShakeWidget> {
-  _ShakeWidgetState(Duration duration) : super(duration);
+class _ShakeWidgetState extends State<ShakeWidget>
+    with SingleTickerProviderStateMixin {
+  _ShakeWidgetState() : super();
+
+  late final AnimationController animationController;
 
   @override
   void initState() {
     super.initState();
+
+    animationController =
+        AnimationController(vsync: this, duration: widget.shakeDuration);
     animationController.addStatusListener(_updateStatus);
   }
 
   @override
   void dispose() {
     animationController.removeStatusListener(_updateStatus);
+    animationController.dispose();
     super.dispose();
   }
 
