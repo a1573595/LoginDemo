@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// https://codewithandrea.com/articles/shake-text-effect-flutter/
 abstract class AnimationControllerState<T extends StatefulWidget>
@@ -19,27 +18,30 @@ abstract class AnimationControllerState<T extends StatefulWidget>
   }
 }
 
+typedef ShackBuilder = void Function(void Function() shakeMethod);
+
 class ShakeWidget extends StatefulWidget {
   const ShakeWidget({
     Key? key,
-    required this.provider,
+    required this.builder,
     required this.child,
     this.shakeCount = 3,
     this.shakeOffset = 10,
     this.shakeDuration = const Duration(milliseconds: 400),
   }) : super(key: key);
-  final ProviderListenable<bool> provider;
+
+  final ShackBuilder builder;
   final Widget child;
   final int shakeCount;
   final double shakeOffset;
   final Duration shakeDuration;
 
   @override
-  State<ShakeWidget> createState() => ShakeWidgetState(shakeDuration);
+  State<ShakeWidget> createState() => _ShakeWidgetState(shakeDuration);
 }
 
-class ShakeWidgetState extends AnimationControllerState<ShakeWidget> {
-  ShakeWidgetState(Duration duration) : super(duration);
+class _ShakeWidgetState extends AnimationControllerState<ShakeWidget> {
+  _ShakeWidgetState(Duration duration) : super(duration);
 
   @override
   void initState() {
@@ -65,30 +67,23 @@ class ShakeWidgetState extends AnimationControllerState<ShakeWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer(builder: (context, ref, child) {
-      ref.listen(widget.provider, (previous, next) {
-        if (next == true) {
-          shake();
-        }
-      });
+    widget.builder.call(shake);
 
-      // 1. return an AnimatedBuilder
-      return AnimatedBuilder(
-        // 2. pass our custom animation as an argument
-        animation: animationController,
-        // 3. optimization: pass the given child as an argument
-        child: widget.child,
-        builder: (context, child) {
-          final sineValue =
-              sin(widget.shakeCount * 2 * pi * animationController.value);
-          return Transform.translate(
-            // 4. apply a translation as a function of the animation value
-            offset: Offset(sineValue * widget.shakeOffset, 0),
-            // 5. use the child widget
-            child: child,
-          );
-        },
-      );
-    });
+    return AnimatedBuilder(
+      /// pass our custom animation as an argument
+      animation: animationController,
+
+      /// optimization: pass the given child as an argument
+      child: widget.child,
+      builder: (context, child) {
+        final sineValue =
+            sin(widget.shakeCount * 2 * pi * animationController.value);
+        return Transform.translate(
+          /// apply a translation as a function of the animation value
+          offset: Offset(sineValue * widget.shakeOffset, 0),
+          child: child,
+        );
+      },
+    );
   }
 }

@@ -13,7 +13,6 @@ import '../../repository/login_repository.dart';
 import '../../router/app_page.dart';
 import '../../utils/images.dart';
 import '../../utils/prefs_box.dart';
-import '../../utils/shared_prefs.dart';
 import '../../utils/dialog_util.dart';
 import '../../widget/shake_widget.dart';
 
@@ -50,30 +49,44 @@ class _LoginBody extends ConsumerWidget {
 
   final FocusNode _passwordFocusNode = FocusNode();
 
+  late void Function() accountShakeMethod;
+
+  late void Function() passwordShakeMethod;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen(_loginViewModel, (previous, next) {
-      if (next is AsyncValue<LoginRes>) {
-        next.when(
-          data: (data) {
-            // if (_isOpen) {
-            //   Navigator.of(context).pop();
-            // }
-            DialogUtil.cancelLoading();
+      next.when(
+        data: (data) {
+          // if (_isOpen) {
+          //   Navigator.of(context).pop();
+          // }
+          DialogUtil.cancelLoading();
 
-            if (data.isLoginSuccess) {
-              context.go(AppPage.welcome.fullPath);
-            } else {
-              DialogUtil.showToast(S.current.login_failed);
-            }
-          },
-          // loading: () => showLoaderDialog(context),
-          loading: () => DialogUtil.showLoading(),
-          error: (e, _) {
-            DialogUtil.cancelLoading();
-            DialogUtil.showToast(e.toString());
-          },
-        );
+          if (data.isLoginSuccess) {
+            context.go(AppPage.welcome.fullPath);
+          } else {
+            DialogUtil.showToast(S.current.login_failed);
+          }
+        },
+        // loading: () => showLoaderDialog(context),
+        loading: () => DialogUtil.showLoading(),
+        error: (e, _) {
+          DialogUtil.cancelLoading();
+          DialogUtil.showToast(e.toString());
+        },
+      );
+    });
+
+    ref.listen(_isAccountError, (previous, next) {
+      if (next) {
+        accountShakeMethod();
+      }
+    });
+
+    ref.listen(_isPasswordError, (previous, next) {
+      if (next) {
+        passwordShakeMethod();
       }
     });
 
@@ -104,7 +117,9 @@ class _LoginBody extends ConsumerWidget {
             children: [
               const Spacer(),
               ShakeWidget(
-                provider: _isAccountError,
+                builder: (void Function() shake) {
+                  accountShakeMethod = shake;
+                },
                 child: _AccountAutoComplete(
                     _accountController, _passwordFocusNode),
               ),
@@ -112,7 +127,9 @@ class _LoginBody extends ConsumerWidget {
                 height: 32,
               ),
               ShakeWidget(
-                  provider: _isPasswordError,
+                  builder: (void Function() shake) {
+                    passwordShakeMethod = shake;
+                  },
                   child: _PasswordTextField(
                       _passwordController, _passwordFocusNode)),
               const SizedBox(
