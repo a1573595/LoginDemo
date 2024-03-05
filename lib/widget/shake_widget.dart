@@ -7,13 +7,13 @@ typedef ShackBuilder = void Function(void Function() shakeMethod);
 
 class ShakeWidget extends StatefulWidget {
   const ShakeWidget({
-    Key? key,
+    super.key,
     required this.builder,
     required this.child,
     this.shakeCount = 3,
     this.shakeOffset = 10,
     this.shakeDuration = const Duration(milliseconds: 400),
-  }) : super(key: key);
+  });
 
   final ShackBuilder builder;
   final Widget child;

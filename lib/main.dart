@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:login/router/router.dart';
 import 'package:login/utils/edge_util.dart';
+import 'package:login/utils/extension_util.dart';
 import 'package:login/utils/shared_prefs.dart';
 
 import 'utils/prefs_box.dart';
@@ -36,10 +37,10 @@ class MyApp extends StatelessWidget {
           var textTheme = Typography.tall2018.apply(fontSizeFactor: 1.sp);
 
           String? lastLocation;
-          rootRouter.addListener(() {
-            if (lastLocation != rootRouter.location) {
-              lastLocation = rootRouter.location;
-              logger.i('Router change:  ${rootRouter.location}');
+          rootRouter.routerDelegate.addListener(() {
+            if (lastLocation != rootRouter.currentLocation) {
+              lastLocation = rootRouter.currentLocation;
+              logger.i('Router change:  $lastLocation');
             }
           });
 
@@ -55,18 +56,22 @@ class MyApp extends StatelessWidget {
             ],
             supportedLocales: S.delegate.supportedLocales,
             theme: ThemeData(
-                primarySwatch: Colors.blue,
-                appBarTheme: AppBarTheme(
-                    color: Colors.white,
-                    iconTheme: const IconThemeData(color: Colors.black),
-                    titleTextStyle:
-                        textTheme.titleLarge?.copyWith(color: Colors.black)),
-                textTheme: textTheme,
-                pageTransitionsTheme: const PageTransitionsTheme(
-                  builders: <TargetPlatform, PageTransitionsBuilder>{
-                    TargetPlatform.android: CupertinoPageTransitionsBuilder(),
-                  },
-                )),
+              primarySwatch: Colors.blue,
+              appBarTheme: AppBarTheme(
+                  color: Colors.white,
+                  iconTheme: const IconThemeData(
+                    color: Colors.black,
+                  ),
+                  titleTextStyle: textTheme.titleLarge?.copyWith(
+                    color: Colors.black,
+                  )),
+              textTheme: textTheme,
+              pageTransitionsTheme: const PageTransitionsTheme(
+                builders: <TargetPlatform, PageTransitionsBuilder>{
+                  TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+                },
+              ),
+            ),
           );
         },
       );

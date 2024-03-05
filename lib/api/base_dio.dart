@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:login/logger/dio_logger.dart';
 
-import '../logger/dio_logger.dart';
 import 'base_error.dart';
 
 class Singleton {
@@ -26,7 +26,10 @@ class BaseDio {
 
   Dio getDio() {
     final Dio dio = Dio();
-    dio.options = BaseOptions(receiveTimeout: 15000, connectTimeout: 15000);
+    dio.options = BaseOptions(
+      receiveTimeout: const Duration(seconds: 15),
+      connectTimeout: const Duration(seconds: 15),
+    );
     dio.interceptors.add(DioLogger());
 
     return dio;
@@ -35,8 +38,8 @@ class BaseDio {
   BaseError getDioError(Object obj) {
     // 封裝BaseError類，依據code返回不同錯誤
     switch (obj.runtimeType) {
-      case DioError:
-        if ((obj as DioError).type == DioErrorType.response) {
+      case const (DioException):
+        if ((obj as DioException).type == DioExceptionType.badResponse) {
           final response = obj.response;
 
           if (response?.statusCode == 401) {

@@ -48,12 +48,10 @@ class LoginViewModel extends StateNotifier<AsyncValue<LoginRes>> {
   }
 
   @override
-  bool updateShouldNotify(
-      AsyncValue<LoginRes> old, AsyncValue<LoginRes> current) {
+  bool updateShouldNotify(AsyncValue<LoginRes> old, AsyncValue<LoginRes> current) {
     return true;
   }
 }
 
 final _loginViewModel =
-    StateNotifierProvider.autoDispose<LoginViewModel, AsyncValue<LoginRes>>(
-        (ref) => LoginViewModel(ref));
+    StateNotifierProvider.autoDispose<LoginViewModel, AsyncValue<LoginRes>>((ref) => LoginViewModel(ref));

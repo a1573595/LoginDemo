@@ -1,10 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:login/api/api_client.dart';
 import 'package:login/model/login_req.dart';
-
-import '../api/api_client.dart';
-import '../model/login_res.dart';
-import '../utils/prefs_box.dart';
-import '../utils/shared_prefs.dart';
+import 'package:login/model/login_res.dart';
+import 'package:login/utils/prefs_box.dart';
 
 final loginRepository = Provider((ref) => LoginRepository());
 

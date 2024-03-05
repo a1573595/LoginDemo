@@ -2,32 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:login/generated/l10n.dart';
+import 'package:login/logger/log_console_on_shake.dart';
+import 'package:login/logger/logger.dart';
+import 'package:login/model/login_res.dart';
+import 'package:login/repository/login_repository.dart';
+import 'package:login/router/app_page.dart';
+import 'package:login/utils/dialog_util.dart';
 import 'package:login/utils/edge_util.dart';
 import 'package:login/utils/helper.dart';
-
-import '../../generated/l10n.dart';
-import '../../logger/log_console_on_shake.dart';
-import '../../logger/logger.dart';
-import '../../model/login_res.dart';
-import '../../repository/login_repository.dart';
-import '../../router/app_page.dart';
-import '../../utils/images.dart';
-import '../../utils/prefs_box.dart';
-import '../../utils/dialog_util.dart';
-import '../../widget/shake_widget.dart';
+import 'package:login/utils/images.dart';
+import 'package:login/utils/prefs_box.dart';
+import 'package:login/widget/shake_widget.dart';
 
 part 'login_view_model.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return LogConsoleOnShake(Container(
       padding: EdgeUtil.screenHorizontalPadding,
       decoration: const BoxDecoration(
-        image:
-            DecorationImage(image: AssetImage(Images.login), fit: BoxFit.cover),
+        image: DecorationImage(image: AssetImage(Images.login), fit: BoxFit.cover),
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
@@ -38,7 +36,7 @@ class LoginPage extends StatelessWidget {
 }
 
 class _LoginBody extends ConsumerWidget {
-  _LoginBody({Key? key}) : super(key: key);
+  _LoginBody({super.key});
 
   // bool _isOpen = false;
 
@@ -101,10 +99,7 @@ class _LoginBody extends ConsumerWidget {
                 padding: const EdgeInsets.symmetric(vertical: 64),
                 child: Text(
                   S.current.welcome_back,
-                  style: Theme.of(context)
-                      .textTheme
-                      .headlineMedium
-                      ?.copyWith(color: Colors.white),
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: Colors.white),
                 ),
               ),
             ],
@@ -120,8 +115,7 @@ class _LoginBody extends ConsumerWidget {
                 builder: (void Function() shake) {
                   accountShakeMethod = shake;
                 },
-                child: _AccountAutoComplete(
-                    _accountController, _passwordFocusNode),
+                child: _AccountAutoComplete(_accountController, _passwordFocusNode),
               ),
               const SizedBox(
                 height: 32,
@@ -130,8 +124,7 @@ class _LoginBody extends ConsumerWidget {
                   builder: (void Function() shake) {
                     passwordShakeMethod = shake;
                   },
-                  child: _PasswordTextField(
-                      _passwordController, _passwordFocusNode)),
+                  child: _PasswordTextField(_passwordController, _passwordFocusNode)),
               const SizedBox(
                 height: 48,
               ),
@@ -140,18 +133,13 @@ class _LoginBody extends ConsumerWidget {
                 children: [
                   Text(
                     S.current.sign_in,
-                    style: Theme.of(context)
-                        .textTheme
-                        .headlineSmall
-                        ?.copyWith(fontWeight: FontWeight.w700),
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w700),
                   ),
 
                   /// 可拖曳Widget
                   Draggable(
                       feedback: const FloatingActionButton(
-                          backgroundColor: Color(0xff4c505b),
-                          onPressed: null,
-                          child: Icon(Icons.arrow_forward)),
+                          backgroundColor: Color(0xff4c505b), onPressed: null, child: Icon(Icons.arrow_forward)),
                       childWhenDragging: const SizedBox(
                         height: 56,
                       ),
@@ -160,8 +148,7 @@ class _LoginBody extends ConsumerWidget {
                           child: const Icon(Icons.arrow_forward),
                           onPressed: () => ref
                               .read(_loginViewModel.notifier)
-                              .login(_accountController.text,
-                                  _passwordController.text))),
+                              .login(_accountController.text, _passwordController.text))),
                 ],
               ),
               const SizedBox(
@@ -235,8 +222,7 @@ class _LoginBody extends ConsumerWidget {
 }
 
 class _AccountAutoComplete extends ConsumerWidget {
-  _AccountAutoComplete(this._controller, this._passwordFocusNode, {Key? key})
-      : super(key: key);
+  _AccountAutoComplete(this._controller, this._passwordFocusNode, {super.key});
 
   final TextEditingController _controller;
   final FocusNode _passwordFocusNode;
@@ -298,8 +284,8 @@ class _AccountAutoComplete extends ConsumerWidget {
                         title: Text(options.elementAt(index)),
                         onTap: () {
                           _controller.text = options.elementAt(index);
-                          _controller.selection = TextSelection.fromPosition(
-                              TextPosition(offset: _controller.text.length));
+                          _controller.selection =
+                              TextSelection.fromPosition(TextPosition(offset: _controller.text.length));
 
                           /// 這裡用nextFocus會失效
                           _passwordFocusNode.requestFocus();
@@ -316,10 +302,7 @@ class _AccountAutoComplete extends ConsumerWidget {
 }
 
 class _AccountTextFormField extends ConsumerWidget {
-  const _AccountTextFormField(
-      this._controller, this._focusNode, this._passwordFocusNode,
-      {Key? key})
-      : super(key: key);
+  const _AccountTextFormField(this._controller, this._focusNode, this._passwordFocusNode, {Key? key}) : super(key: key);
 
   final TextEditingController _controller;
   final FocusNode _focusNode;
@@ -377,9 +360,7 @@ class _AccountTextFormField extends ConsumerWidget {
           hintText: S.current.account,
 
           /// 錯誤提示文字
-          errorText: ref.watch(_isAccountError)
-              ? S.current.please_enter_account
-              : null,
+          errorText: ref.watch(_isAccountError) ? S.current.please_enter_account : null,
 
           /// 輸入框邊框
           border: OutlineInputBorder(
@@ -406,9 +387,7 @@ class _AccountTextFormField extends ConsumerWidget {
 }
 
 class _PasswordTextField extends ConsumerWidget {
-  const _PasswordTextField(this._controller, this._passwordFocusNode,
-      {Key? key})
-      : super(key: key);
+  const _PasswordTextField(this._controller, this._passwordFocusNode, {Key? key}) : super(key: key);
 
   final TextEditingController _controller;
   final FocusNode _passwordFocusNode;
@@ -430,9 +409,7 @@ class _PasswordTextField extends ConsumerWidget {
           fillColor: Colors.grey.shade100,
           filled: true,
           hintText: S.current.password,
-          errorText: ref.watch(_isPasswordError)
-              ? S.current.please_enter_password
-              : null,
+          errorText: ref.watch(_isPasswordError) ? S.current.please_enter_password : null,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -443,13 +420,9 @@ class _PasswordTextField extends ConsumerWidget {
                 child: Material(
                   color: Colors.transparent,
                   child: IconButton(onPressed: () {
-                    ref
-                        .read(_isPasswordVisible.notifier)
-                        .update((state) => !state);
+                    ref.read(_isPasswordVisible.notifier).update((state) => !state);
                   }, icon: Consumer(builder: (context, ref, child) {
-                    return Icon(!ref.watch(_isPasswordVisible)
-                        ? Icons.visibility
-                        : Icons.visibility_off);
+                    return Icon(!ref.watch(_isPasswordVisible) ? Icons.visibility : Icons.visibility_off);
                   })),
                 ),
               ),
@@ -461,8 +434,7 @@ class _PasswordTextField extends ConsumerWidget {
                         ? IconButton(
                             onPressed: () {
                               _controller.clear();
-                              ref.read(_isPasswordClearable.notifier).state =
-                                  false;
+                              ref.read(_isPasswordClearable.notifier).state = false;
                             },
                             icon: const Icon(Icons.cancel),
                           )

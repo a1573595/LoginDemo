@@ -1,24 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:login/utils/shared_prefs.dart';
-
-import '../../generated/l10n.dart';
-import '../../repository/login_repository.dart';
-import '../../router/app_page.dart';
-import '../../utils/images.dart';
-import '../../utils/prefs_box.dart';
+import 'package:login/generated/l10n.dart';
+import 'package:login/repository/login_repository.dart';
+import 'package:login/router/app_page.dart';
+import 'package:login/utils/images.dart';
+import 'package:login/utils/prefs_box.dart';
 
 class WelcomePage extends StatelessWidget {
-  const WelcomePage({Key? key}) : super(key: key);
+  const WelcomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 32),
       decoration: const BoxDecoration(
-        image: DecorationImage(
-            image: AssetImage(Images.welcome), fit: BoxFit.cover),
+        image: DecorationImage(image: AssetImage(Images.welcome), fit: BoxFit.cover),
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
@@ -37,8 +34,7 @@ class WelcomePage extends StatelessWidget {
                   child: Center(
                       // child: Text('${sharedPrefs.getUserName()}',
                       child: Text('${prefsBox.getUserName()}',
-                          style: const TextStyle(
-                              fontSize: 48, color: Colors.white)))),
+                          style: const TextStyle(fontSize: 48, color: Colors.white)))),
               const Align(
                 alignment: Alignment.bottomRight,
                 child: LogoutText(),
@@ -52,7 +48,7 @@ class WelcomePage extends StatelessWidget {
 }
 
 class LogoutText extends StatefulWidget {
-  const LogoutText({Key? key}) : super(key: key);
+  const LogoutText({super.key});
 
   @override
   State<LogoutText> createState() => _LogoutTextState();

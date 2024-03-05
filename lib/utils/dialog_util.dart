@@ -1,7 +1,6 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-
-import '../generated/l10n.dart';
+import 'package:login/generated/l10n.dart';
 
 class DialogUtil {
   /// BotToast的取消Callback

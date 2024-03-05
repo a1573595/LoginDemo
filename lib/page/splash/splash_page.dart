@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
-import '../../router/app_page.dart';
-import '../../utils/prefs_box.dart';
-import '../../utils/shared_prefs.dart';
+import 'package:login/router/app_page.dart';
+import 'package:login/utils/prefs_box.dart';
 
 class SplashPage extends StatefulWidget {
-  const SplashPage({Key? key}) : super(key: key);
+  const SplashPage({super.key});
 
   @override
   State<SplashPage> createState() => _SplashPageState();
